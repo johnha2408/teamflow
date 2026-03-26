@@ -530,21 +530,37 @@ async function initApp(){
   }
 
   // Realtime listeners — cập nhật ngay khi bất kỳ ai thay đổi
+  let membersLoaded = false, projectsLoaded = false;
+
+  function checkAllLoaded(){
+    if(membersLoaded && projectsLoaded){
+      document.getElementById('loadingScreen').style.display='none';
+      if(!currentUser) showLoginScreen();
+    }
+  }
+
   onValue(ref(db,'members'), snap=>{
     MEMBERS = snap.exists() ? Object.entries(snap.val()).map(([id,v])=>({...v,id})) : [];
-    // update current user perm nếu đang login
+    membersLoaded = true;
     if(currentUser){
       const me = MEMBERS.find(m=>m.id===currentUser);
       if(me) updateSidebarUser(me);
+      render();
+    } else {
+      // update login list nếu đang ở màn login
+      const ls = document.getElementById('loginScreen');
+      if(ls && ls.style.display!=='none') showLoginScreen();
     }
     renderSideNav();
-    if(currentUser) render();
+    checkAllLoaded();
   });
 
   onValue(ref(db,'projects'), snap=>{
     PROJECTS = snap.exists() ? Object.entries(snap.val()).map(([id,v])=>({...v,id})) : [];
+    projectsLoaded = true;
     renderSideNav();
     if(currentUser) render();
+    checkAllLoaded();
   });
 
   onValue(ref(db,'tasks'), snap=>{
@@ -553,9 +569,18 @@ async function initApp(){
     if(currentUser) render();
   });
 
-  // Show login after data loaded
-  document.getElementById('loadingScreen').style.display='none';
-  showLoginScreen();
+  // Timeout fallback 8 giây
+  setTimeout(()=>{
+    if(!membersLoaded){
+      document.getElementById('loadingScreen').innerHTML=`
+        <div style="text-align:center;padding:20px">
+          <div style="font-size:32px;margin-bottom:12px">⚠️</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">Không kết nối được Firebase</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Kiểm tra kết nối internet hoặc Firebase Rules</div>
+          <button onclick="location.reload()" style="background:#2a5cff;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px">🔄 Thử lại</button>
+        </div>`;
+    }
+  }, 8000);
 }
 
 // ============ AUTH ============
