@@ -220,6 +220,16 @@ h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
 .admin-row-name{font-size:13px;font-weight:600;}
 .admin-row-sub{font-size:11px;color:var(--muted);}
 .role-select{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;font-weight:600;color:var(--text);outline:none;cursor:pointer;}
+
+/* MEMBER AVATAR UPLOAD */
+.avatar-upload-wrap{position:relative;cursor:pointer;flex-shrink:0;}
+.avatar-upload-wrap input[type=file]{display:none;}
+.avatar-overlay{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;font-size:11px;color:#fff;}
+.avatar-upload-wrap:hover .avatar-overlay{opacity:1;}
+.avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
+
+/* DATE BADGE on task row */
+.task-date{font-size:10px;color:var(--muted2);white-space:nowrap;flex-shrink:0;margin-left:4px;}
 .loading-screen{position:fixed;inset:0;background:var(--bg);z-index:998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
 .loading-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -627,7 +637,9 @@ function showLoginScreen(){
   const list = document.getElementById('loginMemberList');
   list.innerHTML = MEMBERS.map(m=>`
     <div class="login-member-btn" onclick="login('${m.id}')">
-      <div class="avatar" style="background:${m.color}22;color:${m.color};width:38px;height:38px;font-size:14px">${m.short}</div>
+      <div style="width:38px;height:38px;border-radius:50%;overflow:hidden;flex-shrink:0;background:${m.color}22;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:${m.color}">
+        ${m.photo?`<img src="${m.photo}" style="width:100%;height:100%;object-fit:cover" />`:`${m.short}`}
+      </div>
       <div class="lm-info"><div class="lm-name">${m.name}</div><div class="lm-role">${m.role}</div></div>
       <span class="role-badge ${m.perm==='admin'?'role-admin':'role-member'}">${m.perm==='admin'?'ADMIN':'MEMBER'}</span>
     </div>`).join('');
@@ -645,8 +657,11 @@ window.login = function(uid){
 };
 
 function updateSidebarUser(m){
-  document.getElementById('sbAvatar').style.cssText=`background:${m.color}22;color:${m.color}`;
-  document.getElementById('sbAvatar').textContent=m.short;
+  const av=document.getElementById('sbAvatar');
+  av.style.cssText=`background:${m.color}22;color:${m.color};overflow:hidden;padding:0;flex-shrink:0`;
+  av.innerHTML = m.photo
+    ? `<img src="${m.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" />`
+    : m.short;
   document.getElementById('sbName').textContent=m.name;
   document.getElementById('sbRole').textContent=m.role;
   const badge=document.getElementById('sbRoleBadge');
@@ -695,7 +710,9 @@ function renderSideNav(){
   const mn=document.getElementById('memberNav');
   if(mn) mn.innerHTML=MEMBERS.map(m=>`
     <div class="sb-item ${currentView==='member:'+m.id?'active':''}" onclick="setView('member:${m.id}',this)">
-      <div class="avatar" style="background:${m.color}22;color:${m.color};width:20px;height:20px;font-size:9px">${m.short}</div>
+      <div style="width:20px;height:20px;border-radius:50%;overflow:hidden;flex-shrink:0;background:${m.color}22;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:${m.color}">
+        ${m.photo?`<img src="${m.photo}" style="width:100%;height:100%;object-fit:cover" />`:`${m.short}`}
+      </div>
       <span style="flex:1;font-size:12px">${m.name}</span>
       <span style="font-size:10px;color:var(--muted)">${getTasksArray().filter(t=>t.assign===m.id&&t.status!=='done').length}</span>
     </div>`).join('');
@@ -751,7 +768,7 @@ function renderTodayView(){
     <div>
       <div class="panel" style="margin-bottom:14px">
         <div class="panel-head"><h3>👥 Members hôm nay</h3></div>
-        ${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;return`<div class="member-card"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} tasks done</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${mt.length-md}</div></div>`;}).join('')}
+        ${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;const av=m.photo?`<div style="width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0"><img src="${m.photo}" style="width:100%;height:100%;object-fit:cover" /></div>`:`<div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div>`;return`<div class="member-card">${av}<div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} tasks done</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${mt.length-md}</div></div>`;}).join('')}
       </div>
       <div class="panel">
         <div class="panel-head"><h3>📊 By Project</h3></div>
@@ -841,7 +858,7 @@ function renderProjDetail(pid){
     </div>
     <div class="panel">
       <div class="panel-head"><h3>📋 Assignment</h3></div>
-      ${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;if(!mt.length)return'';return`<div class="member-card"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} done</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${mt.length}</div></div>`;}).join('')}
+      ${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;if(!mt.length)return'';const av=m.photo?`<div style="width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0"><img src="${m.photo}" style="width:100%;height:100%;object-fit:cover" /></div>`:`<div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div>`;return`<div class="member-card">${av}<div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} done</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${mt.length}</div></div>`;}).join('')}
     </div>
   </div>`;
 }
@@ -857,7 +874,7 @@ function renderMemberView(mid){
   tasks.forEach(t=>{if(!byProj[t.project])byProj[t.project]=[];byProj[t.project].push(t);});
   let html='';
   Object.keys(byProj).forEach(pid=>{const proj=PROJECTS.find(p=>p.id===pid);html+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;html+=byProj[pid].map(t=>renderTaskRow(t)).join('');});
-  return `
+  const mav=m.photo?`<div style="width:32px;height:32px;border-radius:50%;overflow:hidden"><img src="${m.photo}" style="width:100%;height:100%;object-fit:cover" /></div>`:`<div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div>`;return `
   <div class="stats-grid">
     <div class="stat-card" style="border-top:3px solid ${m.color}"><div class="stat-label">Total</div><div class="stat-num" style="color:${m.color}">${tasks.length}</div></div>
     <div class="stat-card"><div class="stat-label">Today</div><div class="stat-num" style="color:var(--orange)">${today}</div></div>
@@ -865,7 +882,7 @@ function renderMemberView(mid){
     <div class="stat-card"><div class="stat-label">Remaining</div><div class="stat-num" style="color:var(--red)">${tasks.length-done}</div></div>
   </div>
   <div class="panel">
-    <div class="panel-head"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><h3>${m.name} — ${m.role}</h3></div>
+    <div class="panel-head">${mav}<h3>${m.name} — ${m.role}</h3></div>
     ${html||'<div class="empty"><div class="ei">✨</div>No tasks</div>'}
   </div>`;
 }
@@ -891,7 +908,7 @@ function renderReportView(){
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
     <div class="panel"><div class="chart-wrap"><div class="chart-label">Last 7 Days</div><div class="bar-chart">${days.map(d=>`<div class="bar-col"><div class="bar-val">${d.done}</div><div style="flex:1;width:100%;display:flex;flex-direction:column;justify-content:flex-end"><div class="bar-fill" style="height:${Math.round(d.total/maxVal*80)}px;background:var(--border)"></div><div class="bar-fill" style="height:${Math.round(d.done/maxVal*80)}px;background:var(--accent);margin-top:-${Math.round(d.done/maxVal*80)}px"></div></div><div class="bar-lbl">${d.label}</div></div>`).join('')}</div></div></div>
-    <div class="panel"><div class="panel-head"><h3>👥 Performance</h3></div>${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;return`<div class="member-card"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} · ${mt.length?Math.round(md/mt.length*100):0}%</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${md}</div></div>`;}).join('')}</div>
+    <div class="panel"><div class="panel-head"><h3>👥 Performance</h3></div>${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;const av=m.photo?`<div style="width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0"><img src="${m.photo}" style="width:100%;height:100%;object-fit:cover" /></div>`:`<div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div>`;return`<div class="member-card">${av}<div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} · ${mt.length?Math.round(md/mt.length*100):0}%</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${md}</div></div>`;}).join('')}</div>
   </div>
   <div class="proj-report-grid">${PROJECTS.map(p=>{const pt=tasks.filter(t=>t.project===p.id),pd=pt.filter(t=>t.status==='done').length,pct2=pt.length?Math.round(pd/pt.length*100):0;return`<div class="proj-report-card"><div class="proj-report-head"><div style="width:10px;height:10px;border-radius:50%;background:${p.color}"></div><div class="proj-report-name">${p.name}</div><div style="font-family:'Roboto',sans-serif;font-weight:700;font-size:18px;font-weight:800;color:${p.color}">${pct2}%</div></div><div class="proj-stat-row"><span class="proj-stat-label">Total</span><span class="proj-stat-val">${pt.length}</span></div><div class="proj-stat-row"><span class="proj-stat-label">Done</span><span class="proj-stat-val" style="color:var(--green)">${pd}</span></div><div class="proj-bar"><div class="proj-bar-fill" style="width:${pct2}%;background:${p.color}"></div></div></div>`;}).join('')}</div>`;
 }
@@ -899,6 +916,12 @@ function renderReportView(){
 window.setReportPeriod = function(p){ reportPeriod=p; render(); };
 
 // ============ TASK ROW ============
+function fmtDate(d){
+  if(!d) return '';
+  const dt = new Date(d+'T00:00:00');
+  return dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+}
+
 function renderTaskRow(t){
   const proj=PROJECTS.find(p=>p.id===t.project);
   const m=MEMBERS.find(x=>x.id===t.assign);
@@ -906,6 +929,13 @@ function renderTaskRow(t){
   const stC={todo:'var(--muted)',inprogress:'var(--accent)',review:'var(--orange)',done:'var(--green)'};
   const stL={todo:'To Do',inprogress:'In Progress',review:'Review',done:'Done'};
   const clickFn=canEdit()?`openDetail('${t.id}')`:`openDetailReadonly('${t.id}')`;
+
+  // avatar: photo or initials
+  const avatarHTML = m ? (m.photo
+    ? `<div class="task-assignee" title="${m.name}" style="padding:0;overflow:hidden"><img src="${m.photo}" style="width:20px;height:20px;border-radius:50%;object-fit:cover" /></div>`
+    : `<div class="task-assignee" style="background:${m.color}22;color:${m.color}" title="${m.name}">${m.short}</div>`
+  ) : '';
+
   return `<div class="task-row ${isDone?'done':''}" id="tr_${t.id}" onclick="${clickFn}">
     <div class="check-box ${isDone?'done':''}" onclick="event.stopPropagation();toggleDone('${t.id}')"></div>
     <div class="task-prio p-${t.prio}"></div>
@@ -918,7 +948,8 @@ function renderTaskRow(t){
         ${t.images&&t.images.length?`<span class="task-time">📷 ${t.images.length}</span>`:''}
       </div>
     </div>
-    ${m?`<div class="task-assignee" style="background:${m.color}22;color:${m.color}" title="${m.name}">${m.short}</div>`:''}
+    ${avatarHTML}
+    ${t.date?`<span class="task-date">${fmtDate(t.date)}</span>`:''}
     ${canEdit()?`<div class="task-actions"><button class="icon-btn task-del" onclick="event.stopPropagation();deleteTask('${t.id}')">✕</button></div>`:''}
   </div>`;
 }
@@ -1086,12 +1117,22 @@ function renderMemberManageList(){
   <div class="admin-section">
     <div class="admin-hd"><h3>Team Members</h3></div>
     ${MEMBERS.map(m=>`<div class="admin-row">
-      <div class="avatar" style="background:${m.color}22;color:${m.color};width:32px;height:32px;font-size:12px">${m.short}</div>
-      <div class="admin-row-info"><div class="admin-row-name">${m.name}</div><div class="admin-row-sub">${m.role}</div></div>
+      <label class="avatar-upload-wrap" title="Click to upload photo">
+        <div class="avatar" style="background:${m.color}22;color:${m.color};width:36px;height:36px;overflow:hidden;padding:0">
+          ${m.photo?`<img src="${m.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" />`:`<span style="font-size:13px;font-weight:700">${m.short}</span>`}
+        </div>
+        <div class="avatar-overlay">📷</div>
+        <input type="file" accept="image/*" onchange="uploadMemberPhoto('${m.id}',event)" />
+      </label>
+      <div class="admin-row-info">
+        <div class="admin-row-name">${m.name}</div>
+        <div class="admin-row-sub">${m.role}</div>
+      </div>
       <select class="role-select" onchange="changePerm('${m.id}',this.value)" ${m.id===currentUser?'disabled':''}>
         <option value="admin" ${m.perm==='admin'?'selected':''}>🔑 Admin</option>
         <option value="member" ${m.perm==='member'?'selected':''}>👤 Member</option>
       </select>
+      ${m.photo?`<button class="btn btn-ghost btn-sm" style="font-size:10px;padding:3px 7px;color:var(--muted)" onclick="removeMemberPhoto('${m.id}')" title="Remove photo">✕ photo</button>`:''}
       ${m.id!==currentUser?`<button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="removeMember('${m.id}')">✕</button>`:'<span style="font-size:10px;color:var(--muted)">you</span>'}
     </div>`).join('')}
   </div>`;
@@ -1099,7 +1140,24 @@ function renderMemberManageList(){
 
 window.changePerm = async function(mid, perm){
   await fbUpdate(`members/${mid}`,{perm});
-  // re-render list after firebase updates
+};
+
+window.uploadMemberPhoto = function(mid, event){
+  const file = event.target.files[0];
+  if(!file) return;
+  if(file.size > 1*1024*1024){ alert('Image too large (max 1MB)'); return; }
+  const reader = new FileReader();
+  reader.onload = async e => {
+    await fbUpdate(`members/${mid}`,{photo: e.target.result});
+    renderMemberManageList();
+  };
+  reader.readAsDataURL(file);
+  event.target.value='';
+};
+
+window.removeMemberPhoto = async function(mid){
+  await fbUpdate(`members/${mid}`,{photo: null});
+  renderMemberManageList();
 };
 
 window.removeMember = async function(mid){
