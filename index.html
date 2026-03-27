@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TeamFlow — Storimatic Agency</title>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f5f4f0;--surface:#fff;--card:#fafaf8;--border:#e8e6e0;--border2:#d4d0c8;--text:#1a1916;--muted:#8a8780;--muted2:#c4c0b8;--accent:#2a5cff;--accent-s:rgba(42,92,255,.08);--green:#16a34a;--green-s:rgba(22,163,74,.1);--orange:#d97706;--orange-s:rgba(217,119,6,.1);--red:#dc2626;--red-s:rgba(220,38,38,.1);--purple:#7c3aed;--purple-s:rgba(124,58,237,.1);--shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);--shadow-lg:0 8px 32px rgba(0,0,0,.1);}
 body.dark{--bg:#0d0d12;--surface:#13131a;--card:#18181f;--border:#22222e;--border2:#2e2e3e;--text:#e8e8f0;--muted:#6b6b85;--muted2:#3a3a52;--accent:#6c8fff;--accent-s:rgba(108,143,255,.12);--green:#34d07a;--green-s:rgba(52,208,122,.12);--orange:#f59e0b;--orange-s:rgba(245,158,11,.12);--red:#f87171;--red-s:rgba(248,113,113,.12);--purple:#a78bfa;--purple-s:rgba(167,139,250,.12);--shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.2);--shadow-lg:0 8px 32px rgba(0,0,0,.5);}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;font-size:14px;transition:background .2s,color .2s;}
-h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
+body{background:var(--bg);color:var(--text);font-family:'Roboto',sans-serif;min-height:100vh;font-size:14px;transition:background .2s,color .2s;}
+h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
 .layout{display:flex;min-height:100vh;}
 .sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:30;transition:transform .25s,background .2s;}
 .main{flex:1;margin-left:240px;display:flex;flex-direction:column;overflow:hidden;}
@@ -22,7 +22,7 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 .sb-close{display:none;background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;padding:2px 6px;}
 .sb-user{padding:10px 12px;margin:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:10px;cursor:pointer;}
 .sb-user:hover{border-color:var(--border2);}
-.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;font-family:'Bricolage Grotesque',sans-serif;}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;font-family:'Roboto',sans-serif;font-weight:700;}
 .sb-user .uname{font-size:12px;font-weight:600;line-height:1.2;}
 .sb-user .urole{font-size:10px;color:var(--muted);}
 .sb-section{padding:5px 10px 2px;}
@@ -39,7 +39,7 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 .topbar h2{font-size:15px;font-weight:700;flex:1;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .topbar-date{font-size:11px;color:var(--muted);white-space:nowrap;}
 .hamburger{display:none;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:3px;flex-shrink:0;}
-.btn{padding:7px 13px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-family:'Instrument Sans',sans-serif;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn{padding:7px 13px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
 .btn-primary{background:var(--accent);color:#fff;}
 .btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px);}
 .btn-ghost{background:var(--card);color:var(--muted);border:1px solid var(--border);}
@@ -95,7 +95,7 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 .icon-btn:hover{background:var(--bg);color:var(--text);}
 .task-del:hover{color:var(--red)!important;}
 .quick-add{padding:8px 12px;border-top:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;}
-.quick-input{flex:1;min-width:120px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--text);outline:none;transition:border-color .15s;}
+.quick-input{flex:1;min-width:120px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'Roboto',sans-serif;font-size:12px;color:var(--text);outline:none;transition:border-color .15s;}
 .quick-input:focus{border-color:var(--accent);}
 .quick-input::placeholder{color:var(--muted2);}
 .quick-sel{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 6px;font-size:11px;color:var(--muted);outline:none;cursor:pointer;}
@@ -109,7 +109,7 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 .member-tasks{font-size:11px;color:var(--muted);}
 .member-bar{height:4px;background:var(--border);border-radius:99px;margin-top:5px;overflow:hidden;}
 .member-bar-fill{height:100%;border-radius:99px;}
-.member-count{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;}
+.member-count{font-family:'Roboto',sans-serif;font-weight:700;font-size:18px;font-weight:800;}
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
 .kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;}
 .kpi-icon{font-size:22px;margin-bottom:10px;}
@@ -138,7 +138,7 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 .proj-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
 .proj-card-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .proj-card-name{font-size:13px;font-weight:700;flex:1;}
-.proj-card-count{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;}
+.proj-card-count{font-family:'Roboto',sans-serif;font-weight:700;font-size:20px;font-weight:800;}
 .proj-card-bar{height:5px;background:var(--border);border-radius:99px;overflow:hidden;margin-top:10px;}
 .proj-card-fill{height:100%;border-radius:99px;}
 .proj-del-btn{position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;font-size:13px;color:var(--muted2);opacity:0;transition:opacity .15s;padding:3px 6px;border-radius:5px;}
@@ -150,7 +150,7 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 .modal h3{font-size:15px;font-weight:700;margin-bottom:14px;}
 .form-row{margin-bottom:10px;}
 .form-label{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px;}
-.form-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 11px;color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:13px;outline:none;transition:border-color .15s;}
+.form-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 11px;color:var(--text);font-family:'Roboto',sans-serif;font-size:13px;outline:none;transition:border-color .15s;}
 .form-input:focus{border-color:var(--accent);}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;}
@@ -163,9 +163,9 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 .detail-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);padding:4px 8px;border-radius:6px;}
 .detail-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;}
 .detail-field label{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px;}
-.detail-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 11px;color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:13px;outline:none;}
+.detail-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 11px;color:var(--text);font-family:'Roboto',sans-serif;font-size:13px;outline:none;}
 .detail-input:focus{border-color:var(--accent);}
-.detail-textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 11px;color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:13px;outline:none;resize:none;min-height:90px;line-height:1.6;}
+.detail-textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 11px;color:var(--text);font-family:'Roboto',sans-serif;font-size:13px;outline:none;resize:none;min-height:90px;line-height:1.6;}
 .detail-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .detail-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px;}
 .prio-chips{display:flex;gap:5px;flex-wrap:wrap;}
@@ -180,9 +180,29 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 .role-admin{background:rgba(220,38,38,.1);color:var(--red);}
 .role-member{background:rgba(42,92,255,.1);color:var(--accent);}
 .readonly-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;}
+
+/* IMAGE ATTACHMENTS */
+.img-thumb-wrap{position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:1px solid var(--border);cursor:pointer;flex-shrink:0;}
+.img-thumb-wrap img{width:100%;height:100%;object-fit:cover;transition:opacity .15s;}
+.img-thumb-wrap:hover img{opacity:.8;}
+.img-thumb-del{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;}
+.img-thumb-wrap:hover .img-thumb-del{opacity:1;}
+.img-in-task{font-size:10px;color:var(--muted);margin-top:3px;}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:90vw;max-height:80vh;border-radius:8px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,.5);}
+.lightbox-close{position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;opacity:.7;}
+.lightbox-close:hover{opacity:1;}
+.lightbox-nav{display:flex;gap:16px;align-items:center;}
+.lightbox-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;transition:background .15s;}
+.lightbox-btn:hover{background:rgba(255,255,255,.2);}
+.lightbox-counter{color:rgba(255,255,255,.6);font-size:12px;}
+.upload-progress{font-size:11px;color:var(--accent);margin-top:4px;}
 .login-screen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px;}
 .login-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;width:100%;max-width:380px;box-shadow:var(--shadow-lg);text-align:center;}
-.login-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px;}
+.login-logo{font-family:'Roboto',sans-serif;font-weight:700;font-size:22px;font-weight:800;margin-bottom:4px;}
 .login-sub{font-size:12px;color:var(--muted);margin-bottom:20px;}
 .login-members{display:flex;flex-direction:column;gap:7px;}
 .login-member-btn{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:all .15s;background:var(--card);}
@@ -190,7 +210,7 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 .login-member-btn .lm-info{flex:1;text-align:left;}
 .login-member-btn .lm-name{font-size:13px;font-weight:600;}
 .login-member-btn .lm-role{font-size:11px;color:var(--muted);}
-.login-theme-btn{margin-top:14px;background:none;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;cursor:pointer;color:var(--muted);font-family:'Instrument Sans',sans-serif;width:100%;}
+.login-theme-btn{margin-top:14px;background:none;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;cursor:pointer;color:var(--muted);font-family:'Roboto',sans-serif;width:100%;}
 .admin-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
 .admin-hd{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
 .admin-hd h3{font-size:13px;font-weight:700;flex:1;}
@@ -239,14 +259,14 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 <!-- LOADING -->
 <div class="loading-screen" id="loadingScreen">
   <div class="loading-spinner"></div>
-  <div style="font-size:13px;color:var(--muted)">Đang kết nối...</div>
+  <div style="font-size:13px;color:var(--muted)">Connecting...</div>
 </div>
 
 <!-- LOGIN -->
 <div class="login-screen" id="loginScreen" style="display:none">
   <div class="login-box">
     <div class="login-logo">⚡ TeamFlow</div>
-    <div class="login-sub">Storimatic Agency — Chọn tài khoản để vào</div>
+    <div class="login-sub">Storimatic Agency — Select your account</div>
     <div class="login-members" id="loginMemberList"></div>
     <button class="login-theme-btn" onclick="toggleTheme()">🌙 Dark / Light mode</button>
   </div>
@@ -261,29 +281,29 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 <!-- MODALS -->
 <div class="modal-overlay" id="addTaskModal">
   <div class="modal">
-    <h3>➕ Thêm task mới</h3>
-    <div class="form-row"><label class="form-label">Tên task</label><input class="form-input" id="mTitle" placeholder="Mô tả công việc..." /></div>
+    <h3>➕ Add New Task</h3>
+    <div class="form-row"><label class="form-label">Task Name</label><input class="form-input" id="mTitle" placeholder="Task description..." /></div>
     <div class="form-grid">
-      <div class="form-row"><label class="form-label">Dự án</label><select class="form-input" id="mProject"></select></div>
-      <div class="form-row"><label class="form-label">Phân công</label><select class="form-input" id="mAssign"></select></div>
+      <div class="form-row"><label class="form-label">Projects</label><select class="form-input" id="mProject"></select></div>
+      <div class="form-row"><label class="form-label">Assign To</label><select class="form-input" id="mAssign"></select></div>
     </div>
     <div class="form-grid">
-      <div class="form-row"><label class="form-label">Ưu tiên</label><select class="form-input" id="mPrio"><option value="high">🔴 Cao</option><option value="med" selected>🟠 TB</option><option value="low">🟢 Thấp</option></select></div>
-      <div class="form-row"><label class="form-label">Ngày</label><input class="form-input" id="mDate" type="date" /></div>
+      <div class="form-row"><label class="form-label">Priority</label><select class="form-input" id="mPrio"><option value="high">🔴 High</option><option value="med" selected>🟠 Medium</option><option value="low">🟢 Low</option></select></div>
+      <div class="form-row"><label class="form-label">Date</label><input class="form-input" id="mDate" type="date" /></div>
     </div>
-    <div class="form-row"><label class="form-label">Ghi chú</label><input class="form-input" id="mNote" placeholder="Ghi chú thêm..." /></div>
+    <div class="form-row"><label class="form-label">Notes</label><input class="form-input" id="mNote" placeholder="Notes thêm..." /></div>
     <div class="form-actions">
-      <button class="btn btn-ghost" onclick="closeModal('addTaskModal')">Huỷ</button>
-      <button class="btn btn-primary" onclick="submitTask()">Thêm task</button>
+      <button class="btn btn-ghost" onclick="closeModal('addTaskModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitTask()">Add Task</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="addProjectModal">
   <div class="modal">
-    <h3>📁 Thêm dự án mới</h3>
-    <div class="form-row"><label class="form-label">Tên dự án</label><input class="form-input" id="newProjName" placeholder="VD: Omega2000 SEO..." /></div>
-    <div class="form-row"><label class="form-label">Màu</label>
+    <h3>📁 Add Project mới</h3>
+    <div class="form-row"><label class="form-label">Project Name</label><input class="form-input" id="newProjName" placeholder="E.g. Omega2000 SEO..." /></div>
+    <div class="form-row"><label class="form-label">Color</label>
       <select class="form-input" id="newProjColor">
         <option value="#2a5cff">🔵 Xanh dương</option><option value="#7c3aed">🟣 Tím</option>
         <option value="#0891b2">🩵 Cyan</option><option value="#d97706">🟠 Cam</option>
@@ -292,40 +312,40 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
       </select>
     </div>
     <div class="form-actions">
-      <button class="btn btn-ghost" onclick="closeModal('addProjectModal')">Huỷ</button>
-      <button class="btn btn-primary" onclick="submitProject()">Tạo dự án</button>
+      <button class="btn btn-ghost" onclick="closeModal('addProjectModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitProject()">Create Project</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="manageMembersModal">
   <div class="modal" style="max-width:480px">
-    <h3>👥 Quản lý thành viên</h3>
+    <h3>👥 Manage Members</h3>
     <div id="memberManageList" style="margin-bottom:16px"></div>
     <div style="border:1px dashed var(--border2);border-radius:12px;padding:16px">
-      <div style="font-size:12px;font-weight:600;margin-bottom:12px;color:var(--muted)">➕ Thêm thành viên mới</div>
+      <div style="font-size:12px;font-weight:600;margin-bottom:12px;color:var(--muted)">➕ Add New Member</div>
       <div class="form-grid" style="margin-bottom:10px">
-        <div class="form-row"><label class="form-label">Tên</label><input class="form-input" id="newMName" placeholder="Tên thành viên" /></div>
-        <div class="form-row"><label class="form-label">Chức vụ</label><input class="form-input" id="newMRole" placeholder="VD: SEO, Content..." /></div>
+        <div class="form-row"><label class="form-label">Name</label><input class="form-input" id="newMName" placeholder="Name thành viên" /></div>
+        <div class="form-row"><label class="form-label">Role/Position</label><input class="form-input" id="newMRole" placeholder="E.g. SEO, Content..." /></div>
       </div>
       <div class="form-grid" style="margin-bottom:10px">
-        <div class="form-row"><label class="form-label">Màu</label>
+        <div class="form-row"><label class="form-label">Color</label>
           <select class="form-input" id="newMColor">
             <option value="#2a5cff">🔵 Xanh</option><option value="#7c3aed">🟣 Tím</option>
             <option value="#0891b2">🩵 Cyan</option><option value="#d97706">🟠 Cam</option>
             <option value="#16a34a">🟢 Xanh lá</option><option value="#dc2626">🔴 Đỏ</option>
           </select>
         </div>
-        <div class="form-row"><label class="form-label">Quyền</label>
+        <div class="form-row"><label class="form-label">Permission</label>
           <select class="form-input" id="newMPerm">
             <option value="member">👤 Member</option>
             <option value="admin">🔑 Admin</option>
           </select>
         </div>
       </div>
-      <button class="btn btn-primary" style="width:100%" onclick="addMember()">Thêm thành viên</button>
+      <button class="btn btn-primary" style="width:100%" onclick="addMember()">Add Member</button>
     </div>
-    <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('manageMembersModal')">Đóng</button></div>
+    <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('manageMembersModal')">Close</button></div>
   </div>
 </div>
 
@@ -333,34 +353,53 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
 <div class="detail-bd" id="detailBd" onclick="closeDetail()"></div>
 <div class="detail-panel" id="detailPanel">
   <div class="detail-hd">
-    <h3>✏️ Chi tiết task</h3>
+    <h3>✏️ Task Details</h3>
     <button class="detail-close" onclick="closeDetail()">✕</button>
   </div>
   <div class="detail-body">
-    <div class="detail-field"><label>Tên task</label><input class="detail-input" id="dTitle" /></div>
-    <div class="detail-field"><label>Ghi chú / Mô tả</label><textarea class="detail-textarea" id="dNote" placeholder="Mô tả, checklist, link tài liệu..."></textarea></div>
+    <div class="detail-field"><label>Task Name</label><input class="detail-input" id="dTitle" /></div>
+    <div class="detail-field"><label>Notes / Mô tả</label><textarea class="detail-textarea" id="dNote" placeholder="Description, checklist, links..."></textarea></div>
     <div class="detail-row">
-      <div class="detail-field"><label>Dự án</label><select class="detail-input" id="dProject"></select></div>
-      <div class="detail-field"><label>Ngày</label><input class="detail-input" id="dDate" type="date" /></div>
+      <div class="detail-field"><label>Projects</label><select class="detail-input" id="dProject"></select></div>
+      <div class="detail-field"><label>Date</label><input class="detail-input" id="dDate" type="date" /></div>
     </div>
-    <div class="detail-field"><label>Phân công</label><div class="assignee-chips" id="dAssignChips"></div></div>
-    <div class="detail-field"><label>Ưu tiên</label>
+    <div class="detail-field"><label>Assign To</label><div class="assignee-chips" id="dAssignChips"></div></div>
+    <div class="detail-field"><label>Priority</label>
       <div class="prio-chips">
-        <div class="prio-chip" id="pc-high" onclick="selPrio('high')">🔴 Cao</div>
-        <div class="prio-chip" id="pc-med" onclick="selPrio('med')">🟠 TB</div>
-        <div class="prio-chip" id="pc-low" onclick="selPrio('low')">🟢 Thấp</div>
+        <div class="prio-chip" id="pc-high" onclick="selPrio('high')">🔴 High</div>
+        <div class="prio-chip" id="pc-med" onclick="selPrio('med')">🟠 Medium</div>
+        <div class="prio-chip" id="pc-low" onclick="selPrio('low')">🟢 Low</div>
       </div>
     </div>
-    <div class="detail-field"><label>Trạng thái</label>
+    <div class="detail-field"><label>Status</label>
       <select class="detail-input" id="dStatus">
-        <option value="todo">📋 Cần làm</option>
-        <option value="inprogress">🔄 Đang làm</option>
-        <option value="review">👁 Chờ review</option>
-        <option value="done">✅ Hoàn thành</option>
+        <option value="todo">📋 To Do</option>
+        <option value="inprogress">🔄 In Progress</option>
+        <option value="review">👁 In Review</option>
+        <option value="done">✅ Completed</option>
       </select>
+    </div>
+    <div class="detail-field">
+      <label>📎 Attachments</label>
+      <div id="dImageList" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px"></div>
+      <label id="uploadLabel" style="display:flex;align-items:center;gap:8px;padding:9px 12px;border:1.5px dashed var(--border2);border-radius:8px;cursor:pointer;color:var(--muted);font-size:12px;transition:border-color .15s;text-transform:none;letter-spacing:0;font-weight:400">
+        <span>📷</span><span id="uploadLabelText">Click to attach images</span>
+        <input type="file" accept="image/*" multiple style="display:none" onchange="handleImageUpload(event)" />
+      </label>
     </div>
   </div>
   <div class="detail-footer" id="detailFooter"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="" onclick="event.stopPropagation()" />
+  <div class="lightbox-nav" onclick="event.stopPropagation()">
+    <button class="lightbox-btn" onclick="lightboxPrev()">← Prev</button>
+    <span class="lightbox-counter" id="lightboxCounter"></span>
+    <button class="lightbox-btn" onclick="lightboxNext()">Next →</button>
+  </div>
 </div>
 
 <!-- SIDEBAR OVERLAY -->
@@ -382,46 +421,46 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;}
       <div class="sb-label" style="color:var(--red)">⚙️ Admin</div>
       <div class="sb-item" onclick="openManageMembers()">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        Quản lý thành viên
+        Manage Members
       </div>
       <div class="sb-item" onclick="openAddProjectModal()">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        Thêm dự án
+        Add Project
       </div>
     </div>
   </div>
   <div class="sb-section">
-    <div class="sb-label">Tổng quan</div>
+    <div class="sb-label">Overview</div>
     <div class="sb-item active" onclick="setView('today',this)">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Hôm nay <span class="sb-badge" id="todayBadge">0</span>
+      Today <span class="sb-badge" id="todayBadge">0</span>
     </div>
     <div class="sb-item" onclick="setView('all',this)">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg>
-      Tất cả Tasks
+      All Tasks
     </div>
     <div class="sb-item" onclick="setView('projects',this)">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
-      Dự án
+      Projects
     </div>
     <div class="sb-item" onclick="setView('report',this)">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Báo cáo <span class="sb-badge">KPI</span>
+      Reports <span class="sb-badge">KPI</span>
     </div>
   </div>
   <div class="sb-section">
-    <div class="sb-label">Dự án</div>
+    <div class="sb-label">Projects</div>
     <div id="projNav"></div>
   </div>
   <div class="sb-section" style="margin-top:auto;padding-bottom:10px">
-    <div class="sb-label">Thành viên</div>
+    <div class="sb-label">Members</div>
     <div id="memberNav"></div>
   </div>
 </aside>
 <div class="main">
   <div class="topbar">
     <button class="hamburger" onclick="toggleSidebar()">☰</button>
-    <h2 id="viewTitle">Hôm nay</h2>
+    <h2 id="viewTitle">Today</h2>
     <div class="topbar-date" id="topDate"></div>
     <button class="btn btn-ghost btn-sm" onclick="openAddTaskModal()">+ Task</button>
     <button class="btn btn-primary btn-sm" onclick="setView('report',null)">📊 KPI</button>
@@ -495,7 +534,7 @@ function showSync(syncing=false){
   const txt = document.getElementById('syncText');
   ind.classList.add('show');
   dot.className = 'sync-dot' + (syncing?' syncing':'');
-  txt.textContent = syncing ? 'Đang đồng bộ...' : 'Đã đồng bộ ✓';
+  txt.textContent = syncing ? 'Syncing...' : 'Synced ✓';
   clearTimeout(syncTimer);
   if(!syncing) syncTimer = setTimeout(()=>ind.classList.remove('show'), 2500);
 }
@@ -575,9 +614,9 @@ async function initApp(){
       document.getElementById('loadingScreen').innerHTML=`
         <div style="text-align:center;padding:20px">
           <div style="font-size:32px;margin-bottom:12px">⚠️</div>
-          <div style="font-size:14px;font-weight:600;margin-bottom:8px">Không kết nối được Firebase</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Kiểm tra kết nối internet hoặc Firebase Rules</div>
-          <button onclick="location.reload()" style="background:#2a5cff;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px">🔄 Thử lại</button>
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">Could not connect to Firebase</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Check your internet connection or Firebase Rules</div>
+          <button onclick="location.reload()" style="background:#2a5cff;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px">🔄 Retry</button>
         </div>`;
     }
   }, 8000);
@@ -617,7 +656,7 @@ function updateSidebarUser(m){
 }
 
 window.confirmLogout = function(){
-  if(confirm('Đăng xuất?')){ currentUser=null; showLoginScreen(); }
+  if(confirm('Sign out?')){ currentUser=null; showLoginScreen(); }
 };
 
 // ============ RENDER ============
@@ -638,7 +677,7 @@ function render(){
 function updateTopbar(){
   const d=new Date();
   document.getElementById('topDate').textContent=d.toLocaleDateString('vi-VN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const titles={today:'Hôm nay',all:'Tất cả Tasks',projects:'Dự án',report:'Báo cáo & KPI'};
+  const titles={today:'Today',all:'All Tasks',projects:'Projects',report:'Reports & KPI'};
   let title=titles[currentView]||'';
   if(!title&&currentView.startsWith('proj:')) title=PROJECTS.find(p=>p.id===currentView.slice(5))?.name||'';
   if(!title&&currentView.startsWith('member:')) title='👤 '+MEMBERS.find(m=>m.id===currentView.slice(7))?.name||'';
@@ -689,21 +728,21 @@ function renderTodayView(){
     tasksHTML+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;
     tasksHTML+=filterTasks(byProj[pid]).map(t=>renderTaskRow(t)).join('');
   });
-  if(!tasksHTML) tasksHTML='<div class="empty"><div class="ei">✨</div>Không có task nào hôm nay</div>';
+  if(!tasksHTML) tasksHTML='<div class="empty"><div class="ei">✨</div>No tasks today</div>';
   return `
   <div class="stats-grid">
-    <div class="stat-card"><div class="stat-label">Tasks hôm nay</div><div class="stat-num" style="color:var(--accent)">${tasks.length}</div><div class="stat-sub">${done} hoàn thành</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:var(--accent)"></div></div></div>
-    <div class="stat-card"><div class="stat-label">Hoàn thành</div><div class="stat-num" style="color:var(--green)">${done}</div><div class="stat-sub">${pct}% tỉ lệ</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:var(--green)"></div></div></div>
-    <div class="stat-card"><div class="stat-label">Còn lại</div><div class="stat-num" style="color:var(--red)">${tasks.length-done}</div><div class="stat-sub">cần hoàn thành</div></div>
-    <div class="stat-card"><div class="stat-label">Dự án active</div><div class="stat-num" style="color:var(--purple)">${Object.keys(byProj).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Today's Tasks</div><div class="stat-num" style="color:var(--accent)">${tasks.length}</div><div class="stat-sub">${done} completed</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:var(--accent)"></div></div></div>
+    <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-num" style="color:var(--green)">${done}</div><div class="stat-sub">${pct}% tỉ lệ</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:var(--green)"></div></div></div>
+    <div class="stat-card"><div class="stat-label">Remaining</div><div class="stat-num" style="color:var(--red)">${tasks.length-done}</div><div class="stat-sub">cần completed</div></div>
+    <div class="stat-card"><div class="stat-label">Projects active</div><div class="stat-num" style="color:var(--purple)">${Object.keys(byProj).length}</div></div>
   </div>
   <div class="two-col">
     <div class="panel">
-      <div class="panel-head"><h3>📋 Tasks hôm nay</h3><span class="tag" style="background:var(--accent-s);color:var(--accent)">${tasks.length}</span></div>
-      <div class="filter-row">${['all','todo','inprogress','review','done'].map(f=>`<div class="filter-chip ${currentFilter===f?'active':''}" onclick="setFilter('${f}')">${{all:'Tất cả',todo:'Cần làm',inprogress:'Đang làm',review:'Review',done:'Xong'}[f]}</div>`).join('')}</div>
+      <div class="panel-head"><h3>📋 Today's Tasks</h3><span class="tag" style="background:var(--accent-s);color:var(--accent)">${tasks.length}</span></div>
+      <div class="filter-row">${['all','todo','inprogress','review','done'].map(f=>`<div class="filter-chip ${currentFilter===f?'active':''}" onclick="setFilter('${f}')">${{all:'All',todo:'To Do',inprogress:'In Progress',review:'Review',done:'Done'}[f]}</div>`).join('')}</div>
       <div>${tasksHTML}</div>
       <div class="quick-add">
-        <input class="quick-input" id="qInput" placeholder="Thêm task nhanh... (Enter)" onkeydown="if(event.key==='Enter')quickAdd()" />
+        <input class="quick-input" id="qInput" placeholder="Quick add task... (Enter)" onkeydown="if(event.key==='Enter')quickAdd()" />
         <select class="quick-sel" id="qProj">${PROJECTS.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select>
         <select class="quick-sel" id="qAssign">${MEMBERS.map(m=>`<option value="${m.id}" ${m.id===currentUser?'selected':''}>${m.name}</option>`).join('')}</select>
         <button class="add-btn" onclick="quickAdd()">+</button>
@@ -711,11 +750,11 @@ function renderTodayView(){
     </div>
     <div>
       <div class="panel" style="margin-bottom:14px">
-        <div class="panel-head"><h3>👥 Thành viên hôm nay</h3></div>
-        ${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;return`<div class="member-card"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} tasks xong</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${mt.length-md}</div></div>`;}).join('')}
+        <div class="panel-head"><h3>👥 Members hôm nay</h3></div>
+        ${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;return`<div class="member-card"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} tasks done</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${mt.length-md}</div></div>`;}).join('')}
       </div>
       <div class="panel">
-        <div class="panel-head"><h3>📊 Theo dự án</h3></div>
+        <div class="panel-head"><h3>📊 By Project</h3></div>
         ${PROJECTS.map(p=>{const pt=getTasksArray().filter(t=>t.project===p.id&&t.date===todayStr()),pd=pt.filter(t=>t.status==='done').length;if(!pt.length)return'';return`<div style="padding:10px 16px;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><div style="width:8px;height:8px;border-radius:50%;background:${p.color}"></div><span style="font-size:12px;font-weight:600;flex:1">${p.name}</span><span style="font-size:11px;color:var(--muted)">${pd}/${pt.length}</span></div><div class="stat-bar"><div class="stat-bar-fill" style="width:${pt.length?Math.round(pd/pt.length*100):0}%;background:${p.color}"></div></div></div>`;}).join('')}
       </div>
     </div>
@@ -731,12 +770,12 @@ function renderAllView(){
   let html='';
   Object.keys(byProj).forEach(pid=>{const proj=PROJECTS.find(p=>p.id===pid);html+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;html+=byProj[pid].map(t=>renderTaskRow(t)).join('');});
   return `
-  <div class="tab-row">${['all','todo','inprogress','review','done'].map(f=>`<div class="tab ${currentFilter===f?'active':''}" onclick="setFilter('${f}')">${{all:'Tất cả',todo:'Cần làm',inprogress:'Đang làm',review:'Review',done:'Xong'}[f]}</div>`).join('')}</div>
+  <div class="tab-row">${['all','todo','inprogress','review','done'].map(f=>`<div class="tab ${currentFilter===f?'active':''}" onclick="setFilter('${f}')">${{all:'All',todo:'To Do',inprogress:'In Progress',review:'Review',done:'Done'}[f]}</div>`).join('')}</div>
   <div class="panel">
-    <div class="panel-head"><h3>📋 Tất cả tasks</h3><span class="tag" style="background:var(--accent-s);color:var(--accent)">${filtered.length}</span></div>
-    ${html||'<div class="empty"><div class="ei">✨</div>Không có task nào</div>'}
+    <div class="panel-head"><h3>📋 All tasks</h3><span class="tag" style="background:var(--accent-s);color:var(--accent)">${filtered.length}</span></div>
+    ${html||'<div class="empty"><div class="ei">✨</div>No tasks found</div>'}
     <div class="quick-add">
-      <input class="quick-input" id="qInput" placeholder="Thêm task nhanh... (Enter)" onkeydown="if(event.key==='Enter')quickAdd()" />
+      <input class="quick-input" id="qInput" placeholder="Quick add task... (Enter)" onkeydown="if(event.key==='Enter')quickAdd()" />
       <select class="quick-sel" id="qProj">${PROJECTS.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select>
       <select class="quick-sel" id="qAssign">${MEMBERS.map(m=>`<option value="${m.id}" ${m.id===currentUser?'selected':''}>${m.name}</option>`).join('')}</select>
       <button class="add-btn" onclick="quickAdd()">+</button>
@@ -748,7 +787,7 @@ function renderAllView(){
 function renderProjectsView(){
   const icons=['🎬','🔍','🏗','🏢','⚙️','📱','💡'];
   return `
-  ${isAdmin()?`<div style="display:flex;justify-content:flex-end;margin-bottom:14px"><button class="btn btn-primary btn-sm" onclick="openAddProjectModal()">+ Thêm dự án</button></div>`:''}
+  ${isAdmin()?`<div style="display:flex;justify-content:flex-end;margin-bottom:14px"><button class="btn btn-primary btn-sm" onclick="openAddProjectModal()">+ Add Project</button></div>`:''}
   <div class="proj-grid">
     ${PROJECTS.map((p,i)=>{
       const pt=getTasksArray().filter(t=>t.project===p.id);
@@ -756,15 +795,15 @@ function renderProjectsView(){
       const pct=pt.length?Math.round(pd/pt.length*100):0;
       const today=pt.filter(t=>t.date===todayStr()&&t.status!=='done').length;
       return `<div class="proj-card" onclick="setView('proj:${p.id}',null)">
-        ${isAdmin()?`<button class="proj-del-btn" onclick="event.stopPropagation();deleteProject('${p.id}')" title="Xoá dự án">✕</button>`:''}
+        ${isAdmin()?`<button class="proj-del-btn" onclick="event.stopPropagation();deleteProject('${p.id}')" title="Delete project">✕</button>`:''}
         <div class="proj-card-top">
           <div style="width:36px;height:36px;border-radius:10px;background:${p.color}22;display:flex;align-items:center;justify-content:center;font-size:18px">${icons[i%icons.length]}</div>
-          <div style="flex:1"><div class="proj-card-name">${p.name}</div><div style="font-size:10px;color:var(--muted)">${pt.filter(t=>t.status!=='done').length} còn lại</div></div>
+          <div style="flex:1"><div class="proj-card-name">${p.name}</div><div style="font-size:10px;color:var(--muted)">${pt.filter(t=>t.status!=='done').length} remaining</div></div>
         </div>
         <div style="display:flex;gap:12px;margin-bottom:8px">
-          <div><div style="font-size:10px;color:var(--muted)">Tổng</div><div class="proj-card-count" style="color:${p.color}">${pt.length}</div></div>
-          <div><div style="font-size:10px;color:var(--muted)">Xong</div><div class="proj-card-count" style="color:var(--green)">${pd}</div></div>
-          <div><div style="font-size:10px;color:var(--muted)">Hôm nay</div><div class="proj-card-count" style="color:var(--orange)">${today}</div></div>
+          <div><div style="font-size:10px;color:var(--muted)">Total</div><div class="proj-card-count" style="color:${p.color}">${pt.length}</div></div>
+          <div><div style="font-size:10px;color:var(--muted)">Done</div><div class="proj-card-count" style="color:var(--green)">${pd}</div></div>
+          <div><div style="font-size:10px;color:var(--muted)">Today</div><div class="proj-card-count" style="color:var(--orange)">${today}</div></div>
           <div><div style="font-size:10px;color:var(--muted)">%</div><div class="proj-card-count" style="color:var(--accent)">${pct}%</div></div>
         </div>
         <div class="proj-card-bar"><div class="proj-card-fill" style="width:${pct}%;background:${p.color}"></div></div>
@@ -782,10 +821,10 @@ function renderProjDetail(pid){
   const pct=tasks.length?Math.round(done/tasks.length*100):0;
   const byStatus={todo:[],inprogress:[],review:[],done:[]};
   tasks.forEach(t=>{if(byStatus[t.status])byStatus[t.status].push(t);});
-  const sL={todo:'📋 Cần làm',inprogress:'🔄 Đang làm',review:'👁 Review',done:'✅ Xong'};
+  const sL={todo:'📋 To Do',inprogress:'🔄 In Progress',review:'👁 Review',done:'✅ Done'};
   return `
   <div class="stats-grid">
-    ${[['Tổng',tasks.length,'var(--accent)'],['Xong',done,'var(--green)'],['Còn lại',tasks.length-done,'var(--red)'],['Tiến độ',pct+'%','var(--purple)']].map(([l,v,c])=>`<div class="stat-card"><div class="stat-label">${l}</div><div class="stat-num" style="color:${c}">${v}</div></div>`).join('')}
+    ${[['Total',tasks.length,'var(--accent)'],['Done',done,'var(--green)'],['Remaining',tasks.length-done,'var(--red)'],['Progress',pct+'%','var(--purple)']].map(([l,v,c])=>`<div class="stat-card"><div class="stat-label">${l}</div><div class="stat-num" style="color:${c}">${v}</div></div>`).join('')}
   </div>
   <div class="two-col">
     <div class="panel">
@@ -793,16 +832,16 @@ function renderProjDetail(pid){
         ${isAdmin()?`<button class="btn btn-primary btn-sm" onclick="openAddTaskModalProj('${pid}')">+ Task</button>`:''}
       </div>
       ${Object.keys(byStatus).map(s=>byStatus[s].length?`<div class="task-group-hd">${sL[s]} (${byStatus[s].length})</div>${byStatus[s].map(t=>renderTaskRow(t)).join('')}`:'').join('')}
-      ${!tasks.length?'<div class="empty"><div class="ei">📂</div>Chưa có task nào</div>':''}
+      ${!tasks.length?'<div class="empty"><div class="ei">📂</div>No tasks yet</div>':''}
       <div class="quick-add">
-        <input class="quick-input" id="qInput" placeholder="Thêm task cho ${proj.name}..." onkeydown="if(event.key==='Enter')quickAddProj('${pid}')" />
+        <input class="quick-input" id="qInput" placeholder="Add Task cho ${proj.name}..." onkeydown="if(event.key==='Enter')quickAddProj('${pid}')" />
         <select class="quick-sel" id="qAssign">${MEMBERS.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select>
         <button class="add-btn" onclick="quickAddProj('${pid}')">+</button>
       </div>
     </div>
     <div class="panel">
-      <div class="panel-head"><h3>👥 Phân công</h3></div>
-      ${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;if(!mt.length)return'';return`<div class="member-card"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} xong</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${mt.length}</div></div>`;}).join('')}
+      <div class="panel-head"><h3>📋 Assignment</h3></div>
+      ${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;if(!mt.length)return'';return`<div class="member-card"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} done</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${mt.length}</div></div>`;}).join('')}
     </div>
   </div>`;
 }
@@ -820,14 +859,14 @@ function renderMemberView(mid){
   Object.keys(byProj).forEach(pid=>{const proj=PROJECTS.find(p=>p.id===pid);html+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;html+=byProj[pid].map(t=>renderTaskRow(t)).join('');});
   return `
   <div class="stats-grid">
-    <div class="stat-card" style="border-top:3px solid ${m.color}"><div class="stat-label">Tổng</div><div class="stat-num" style="color:${m.color}">${tasks.length}</div></div>
-    <div class="stat-card"><div class="stat-label">Hôm nay</div><div class="stat-num" style="color:var(--orange)">${today}</div></div>
-    <div class="stat-card"><div class="stat-label">Xong</div><div class="stat-num" style="color:var(--green)">${done}</div></div>
-    <div class="stat-card"><div class="stat-label">Còn lại</div><div class="stat-num" style="color:var(--red)">${tasks.length-done}</div></div>
+    <div class="stat-card" style="border-top:3px solid ${m.color}"><div class="stat-label">Total</div><div class="stat-num" style="color:${m.color}">${tasks.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Today</div><div class="stat-num" style="color:var(--orange)">${today}</div></div>
+    <div class="stat-card"><div class="stat-label">Done</div><div class="stat-num" style="color:var(--green)">${done}</div></div>
+    <div class="stat-card"><div class="stat-label">Remaining</div><div class="stat-num" style="color:var(--red)">${tasks.length-done}</div></div>
   </div>
   <div class="panel">
     <div class="panel-head"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><h3>${m.name} — ${m.role}</h3></div>
-    ${html||'<div class="empty"><div class="ei">✨</div>Không có task</div>'}
+    ${html||'<div class="empty"><div class="ei">✨</div>No tasks</div>'}
   </div>`;
 }
 
@@ -844,17 +883,17 @@ function renderReportView(){
   const days=Array.from({length:7},(_,i)=>{const d=new Date(now);d.setDate(now.getDate()-6+i);const ds=todate(d);return{label:d.toLocaleDateString('vi-VN',{weekday:'short'}),total:allT.filter(t=>t.date===ds).length,done:allT.filter(t=>t.date===ds&&t.status==='done').length};});
   const maxVal=Math.max(...days.map(d=>d.total),1);
   return `
-  <div class="tab-row" style="margin-bottom:18px">${['day','week','month','all'].map(p=>`<div class="tab ${reportPeriod===p?'active':''}" onclick="setReportPeriod('${p}')">${{day:'Hôm nay',week:'Tuần này',month:'Tháng này',all:'Tất cả'}[p]}</div>`).join('')}</div>
+  <div class="tab-row" style="margin-bottom:18px">${['day','week','month','all'].map(p=>`<div class="tab ${reportPeriod===p?'active':''}" onclick="setReportPeriod('${p}')">${{day:'Today',week:'This Week',month:'This Month',all:'All'}[p]}</div>`).join('')}</div>
   <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-icon">📋</div><div class="kpi-label">Tổng tasks</div><div class="kpi-val" style="color:var(--accent)">${tasks.length}</div></div>
-    <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-label">Hoàn thành</div><div class="kpi-val" style="color:var(--green)">${done}</div><div class="kpi-change up">${pct}% tỉ lệ</div></div>
-    <div class="kpi-card"><div class="kpi-icon">🔥</div><div class="kpi-label">Ưu tiên cao xong</div><div class="kpi-val" style="color:var(--red)">${tasks.filter(t=>t.status==='done'&&t.prio==='high').length}</div></div>
+    <div class="kpi-card"><div class="kpi-icon">📋</div><div class="kpi-label">Total tasks</div><div class="kpi-val" style="color:var(--accent)">${tasks.length}</div></div>
+    <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-label">Completed</div><div class="kpi-val" style="color:var(--green)">${done}</div><div class="kpi-change up">${pct}% tỉ lệ</div></div>
+    <div class="kpi-card"><div class="kpi-icon">🔥</div><div class="kpi-label">High Priority Done</div><div class="kpi-val" style="color:var(--red)">${tasks.filter(t=>t.status==='done'&&t.prio==='high').length}</div></div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
-    <div class="panel"><div class="chart-wrap"><div class="chart-label">Tasks 7 ngày qua</div><div class="bar-chart">${days.map(d=>`<div class="bar-col"><div class="bar-val">${d.done}</div><div style="flex:1;width:100%;display:flex;flex-direction:column;justify-content:flex-end"><div class="bar-fill" style="height:${Math.round(d.total/maxVal*80)}px;background:var(--border)"></div><div class="bar-fill" style="height:${Math.round(d.done/maxVal*80)}px;background:var(--accent);margin-top:-${Math.round(d.done/maxVal*80)}px"></div></div><div class="bar-lbl">${d.label}</div></div>`).join('')}</div></div></div>
-    <div class="panel"><div class="panel-head"><h3>👥 Hiệu suất</h3></div>${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;return`<div class="member-card"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} · ${mt.length?Math.round(md/mt.length*100):0}%</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${md}</div></div>`;}).join('')}</div>
+    <div class="panel"><div class="chart-wrap"><div class="chart-label">Last 7 Days</div><div class="bar-chart">${days.map(d=>`<div class="bar-col"><div class="bar-val">${d.done}</div><div style="flex:1;width:100%;display:flex;flex-direction:column;justify-content:flex-end"><div class="bar-fill" style="height:${Math.round(d.total/maxVal*80)}px;background:var(--border)"></div><div class="bar-fill" style="height:${Math.round(d.done/maxVal*80)}px;background:var(--accent);margin-top:-${Math.round(d.done/maxVal*80)}px"></div></div><div class="bar-lbl">${d.label}</div></div>`).join('')}</div></div></div>
+    <div class="panel"><div class="panel-head"><h3>👥 Performance</h3></div>${MEMBERS.map(m=>{const mt=tasks.filter(t=>t.assign===m.id),md=mt.filter(t=>t.status==='done').length;return`<div class="member-card"><div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div><div class="member-info"><div class="member-name">${m.name}</div><div class="member-tasks">${md}/${mt.length} · ${mt.length?Math.round(md/mt.length*100):0}%</div><div class="member-bar"><div class="member-bar-fill" style="width:${mt.length?Math.round(md/mt.length*100):0}%;background:${m.color}"></div></div></div><div class="member-count" style="color:${m.color}">${md}</div></div>`;}).join('')}</div>
   </div>
-  <div class="proj-report-grid">${PROJECTS.map(p=>{const pt=tasks.filter(t=>t.project===p.id),pd=pt.filter(t=>t.status==='done').length,pct2=pt.length?Math.round(pd/pt.length*100):0;return`<div class="proj-report-card"><div class="proj-report-head"><div style="width:10px;height:10px;border-radius:50%;background:${p.color}"></div><div class="proj-report-name">${p.name}</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:${p.color}">${pct2}%</div></div><div class="proj-stat-row"><span class="proj-stat-label">Tổng</span><span class="proj-stat-val">${pt.length}</span></div><div class="proj-stat-row"><span class="proj-stat-label">Xong</span><span class="proj-stat-val" style="color:var(--green)">${pd}</span></div><div class="proj-bar"><div class="proj-bar-fill" style="width:${pct2}%;background:${p.color}"></div></div></div>`;}).join('')}</div>`;
+  <div class="proj-report-grid">${PROJECTS.map(p=>{const pt=tasks.filter(t=>t.project===p.id),pd=pt.filter(t=>t.status==='done').length,pct2=pt.length?Math.round(pd/pt.length*100):0;return`<div class="proj-report-card"><div class="proj-report-head"><div style="width:10px;height:10px;border-radius:50%;background:${p.color}"></div><div class="proj-report-name">${p.name}</div><div style="font-family:'Roboto',sans-serif;font-weight:700;font-size:18px;font-weight:800;color:${p.color}">${pct2}%</div></div><div class="proj-stat-row"><span class="proj-stat-label">Total</span><span class="proj-stat-val">${pt.length}</span></div><div class="proj-stat-row"><span class="proj-stat-label">Done</span><span class="proj-stat-val" style="color:var(--green)">${pd}</span></div><div class="proj-bar"><div class="proj-bar-fill" style="width:${pct2}%;background:${p.color}"></div></div></div>`;}).join('')}</div>`;
 }
 
 window.setReportPeriod = function(p){ reportPeriod=p; render(); };
@@ -865,7 +904,7 @@ function renderTaskRow(t){
   const m=MEMBERS.find(x=>x.id===t.assign);
   const isDone=t.status==='done';
   const stC={todo:'var(--muted)',inprogress:'var(--accent)',review:'var(--orange)',done:'var(--green)'};
-  const stL={todo:'Cần làm',inprogress:'Đang làm',review:'Review',done:'Xong'};
+  const stL={todo:'To Do',inprogress:'In Progress',review:'Review',done:'Done'};
   const clickFn=canEdit()?`openDetail('${t.id}')`:`openDetailReadonly('${t.id}')`;
   return `<div class="task-row ${isDone?'done':''}" id="tr_${t.id}" onclick="${clickFn}">
     <div class="check-box ${isDone?'done':''}" onclick="event.stopPropagation();toggleDone('${t.id}')"></div>
@@ -876,6 +915,7 @@ function renderTaskRow(t){
         ${proj?`<span class="task-proj" style="background:${proj.color}22;color:${proj.color}">${proj.name}</span>`:''}
         <span style="font-size:10px;color:${stC[t.status]};font-weight:500">${stL[t.status]}</span>
         ${t.note?'<span class="task-time">📝</span>':''}
+        ${t.images&&t.images.length?`<span class="task-time">📷 ${t.images.length}</span>`:''}
       </div>
     </div>
     ${m?`<div class="task-assignee" style="background:${m.color}22;color:${m.color}" title="${m.name}">${m.short}</div>`:''}
@@ -898,8 +938,8 @@ window.toggleDone = async function(id){
 };
 
 window.deleteTask = async function(id){
-  if(!canEdit()){alert('Không có quyền xoá task.');return;}
-  if(!confirm('Xoá task này?')) return;
+  if(!canEdit()){alert('You do not have permission to delete tasks.');return;}
+  if(!confirm('Delete this task?')) return;
   await fbRemove(`tasks/${id}`);
 };
 
@@ -946,16 +986,19 @@ window.openDetail = function(id){
   if(!canEdit()){openDetailReadonly(id);return;}
   const t=TASKS[id]; if(!t) return;
   detailId=id; detailPrio=t.prio||'med';
+  currentImages = t.images ? JSON.parse(JSON.stringify(t.images)) : [];
   document.getElementById('dTitle').value=t.title||'';
   document.getElementById('dNote').value=t.note||'';
   document.getElementById('dDate').value=t.date||todayStr();
   document.getElementById('dStatus').value=t.status||'todo';
   ['dTitle','dNote','dDate','dStatus','dProject'].forEach(i=>{const el=document.getElementById(i);if(el){el.disabled=false;el.style.opacity='1';}});
   document.querySelectorAll('.prio-chip,.assignee-chip').forEach(el=>el.style.pointerEvents='auto');
+  document.getElementById('uploadLabel').style.display='flex';
   document.getElementById('dProject').innerHTML=PROJECTS.map(p=>`<option value="${p.id}" ${p.id===t.project?'selected':''}>${p.name}</option>`).join('');
   document.getElementById('dAssignChips').innerHTML=MEMBERS.map(m=>`<div class="assignee-chip ${t.assign===m.id?'sel':''}" onclick="selAssign('${m.id}')" id="ac_${m.id}"><span style="width:8px;height:8px;border-radius:50%;background:${m.color};display:inline-block;margin-right:4px"></span>${m.name}</div>`).join('');
   selPrio(detailPrio);
-  document.getElementById('detailFooter').innerHTML=`<button class="btn btn-primary" style="flex:1" onclick="saveDetail()">💾 Lưu</button><button class="btn btn-ghost" onclick="deleteFromDetail()">🗑 Xoá</button>`;
+  renderImageThumbs(true);
+  document.getElementById('detailFooter').innerHTML=`<button class="btn btn-primary" style="flex:1" onclick="saveDetail()">💾 Save</button><button class="btn btn-ghost" onclick="deleteFromDetail()">🗑 Delete</button>`;
   document.getElementById('detailPanel').classList.add('open');
   document.getElementById('detailBd').classList.add('open');
 };
@@ -963,42 +1006,49 @@ window.openDetail = function(id){
 window.openDetailReadonly = function(id){
   const t=TASKS[id]; if(!t) return;
   detailId=id; detailPrio=t.prio||'med';
+  currentImages = t.images ? JSON.parse(JSON.stringify(t.images)) : [];
   document.getElementById('dTitle').value=t.title||'';
-  document.getElementById('dNote').value=t.note||'(Không có ghi chú)';
+  document.getElementById('dNote').value=t.note||'(No notes)';
   document.getElementById('dDate').value=t.date||todayStr();
   document.getElementById('dStatus').value=t.status||'todo';
   ['dTitle','dNote','dDate','dStatus','dProject'].forEach(i=>{const el=document.getElementById(i);if(el){el.disabled=true;el.style.opacity='.7';}});
   document.querySelectorAll('.prio-chip,.assignee-chip').forEach(el=>el.style.pointerEvents='none');
+  const ul=document.getElementById('uploadLabel'); if(ul) ul.style.display='none';
   document.getElementById('dProject').innerHTML=PROJECTS.map(p=>`<option value="${p.id}" ${p.id===t.project?'selected':''}>${p.name}</option>`).join('');
   document.getElementById('dAssignChips').innerHTML=MEMBERS.map(m=>`<div class="assignee-chip ${t.assign===m.id?'sel':''}" id="ac_${m.id}" style="pointer-events:none"><span style="width:8px;height:8px;border-radius:50%;background:${m.color};display:inline-block;margin-right:4px"></span>${m.name}</div>`).join('');
   selPrio(detailPrio);
-  document.getElementById('detailFooter').innerHTML=`<div class="readonly-badge" style="flex:1;justify-content:center;padding:10px">👁 Chỉ đọc</div><button class="btn btn-ghost" onclick="closeDetail()">Đóng</button>`;
+  renderImageThumbs(false);
+  document.getElementById('detailFooter').innerHTML=`<div class="readonly-badge" style="flex:1;justify-content:center;padding:10px">👁 Read Only</div><button class="btn btn-ghost" onclick="closeDetail()">Close</button>`;
   document.getElementById('detailPanel').classList.add('open');
   document.getElementById('detailBd').classList.add('open');
 };
 
-window.closeDetail = function(){ document.getElementById('detailPanel').classList.remove('open'); document.getElementById('detailBd').classList.remove('open'); detailId=null; };
+window.closeDetail = function(){
+  document.getElementById('detailPanel').classList.remove('open');
+  document.getElementById('detailBd').classList.remove('open');
+  detailId=null; currentImages=[];
+};
 window.selPrio = function(p){ detailPrio=p; ['high','med','low'].forEach(x=>{const c=document.getElementById('pc-'+x);if(c)c.className='prio-chip'+(x===p?` sel-${x}`:'')}); };
 window.selAssign = function(mid){ document.querySelectorAll('.assignee-chip').forEach(c=>c.classList.remove('sel')); const el=document.getElementById('ac_'+mid);if(el)el.classList.add('sel'); };
 function getSelAssign(){ const el=document.querySelector('.assignee-chip.sel'); return el?el.id.replace('ac_',''):currentUser; }
 
 window.saveDetail = async function(){
-  if(!canEdit()){alert('Không có quyền.');return;}
+  if(!canEdit()){alert('You do not have permission.');return;}
   if(!detailId) return;
-  await fbUpdate(`tasks/${detailId}`,{title:document.getElementById('dTitle').value.trim(),note:document.getElementById('dNote').value,date:document.getElementById('dDate').value,project:document.getElementById('dProject').value,prio:detailPrio,assign:getSelAssign(),status:document.getElementById('dStatus').value});
+  await fbUpdate(`tasks/${detailId}`,{title:document.getElementById('dTitle').value.trim(),note:document.getElementById('dNote').value,date:document.getElementById('dDate').value,project:document.getElementById('dProject').value,prio:detailPrio,assign:getSelAssign(),status:document.getElementById('dStatus').value,images:currentImages.length?currentImages:null});
   closeDetail();
 };
 
 window.deleteFromDetail = async function(){
-  if(!canEdit()){alert('Không có quyền.');return;}
-  if(!detailId||!confirm('Xoá task này?')) return;
+  if(!canEdit()){alert('You do not have permission.');return;}
+  if(!detailId||!confirm('Delete this task?')) return;
   await fbRemove(`tasks/${detailId}`);
   closeDetail();
 };
 
 // ============ PROJECT MANAGEMENT ============
 window.openAddProjectModal = function(){
-  if(!isAdmin()){alert('Chỉ Admin mới có quyền.');return;}
+  if(!isAdmin()){alert('Only Admins can do this.');return;}
   document.getElementById('newProjName').value='';
   document.getElementById('addProjectModal').classList.add('open');
   setTimeout(()=>document.getElementById('newProjName').focus(),100);
@@ -1013,10 +1063,10 @@ window.submitProject = async function(){
 };
 
 window.deleteProject = async function(pid){
-  if(!isAdmin()){alert('Chỉ Admin mới có quyền.');return;}
+  if(!isAdmin()){alert('Only Admins can do this.');return;}
   const proj=PROJECTS.find(p=>p.id===pid);
   const cnt=getTasksArray().filter(t=>t.project===pid).length;
-  if(!confirm(`Xoá dự án "${proj?.name}"?\n${cnt>0?`⚠️ ${cnt} task sẽ bị xoá theo!`:''}`)) return;
+  if(!confirm(`Delete project "${proj?.name}"?\n${cnt>0?`⚠️ ${cnt} tasks will also be deleted!`:''}`)) return;
   await fbRemove(`projects/${pid}`);
   // xoá tasks của project
   const toDelete=Object.keys(TASKS||{}).filter(id=>TASKS[id].project===pid);
@@ -1026,7 +1076,7 @@ window.deleteProject = async function(pid){
 
 // ============ MEMBER MANAGEMENT ============
 window.openManageMembers = function(){
-  if(!isAdmin()){alert('Chỉ Admin mới có quyền.');return;}
+  if(!isAdmin()){alert('Only Admins can do this.');return;}
   renderMemberManageList();
   document.getElementById('manageMembersModal').classList.add('open');
 };
@@ -1034,7 +1084,7 @@ window.openManageMembers = function(){
 function renderMemberManageList(){
   document.getElementById('memberManageList').innerHTML=`
   <div class="admin-section">
-    <div class="admin-hd"><h3>Danh sách thành viên</h3></div>
+    <div class="admin-hd"><h3>Team Members</h3></div>
     ${MEMBERS.map(m=>`<div class="admin-row">
       <div class="avatar" style="background:${m.color}22;color:${m.color};width:32px;height:32px;font-size:12px">${m.short}</div>
       <div class="admin-row-info"><div class="admin-row-name">${m.name}</div><div class="admin-row-sub">${m.role}</div></div>
@@ -1042,7 +1092,7 @@ function renderMemberManageList(){
         <option value="admin" ${m.perm==='admin'?'selected':''}>🔑 Admin</option>
         <option value="member" ${m.perm==='member'?'selected':''}>👤 Member</option>
       </select>
-      ${m.id!==currentUser?`<button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="removeMember('${m.id}')">✕</button>`:'<span style="font-size:10px;color:var(--muted)">bạn</span>'}
+      ${m.id!==currentUser?`<button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="removeMember('${m.id}')">✕</button>`:'<span style="font-size:10px;color:var(--muted)">you</span>'}
     </div>`).join('')}
   </div>`;
 }
@@ -1053,8 +1103,8 @@ window.changePerm = async function(mid, perm){
 };
 
 window.removeMember = async function(mid){
-  if(mid===currentUser){alert('Không thể xoá tài khoản đang đăng nhập!');return;}
-  if(!confirm('Xoá thành viên này?')) return;
+  if(mid===currentUser){alert('Cannot remove your own account!');return;}
+  if(!confirm('Remove this member?')) return;
   await fbRemove(`members/${mid}`);
 };
 
@@ -1066,6 +1116,76 @@ window.addMember = async function(){
   document.getElementById('newMName').value='';
   document.getElementById('newMRole').value='';
 };
+
+// ============ IMAGE ATTACHMENTS ============
+let currentImages = []; // base64 images for current open task
+let lightboxImages = [];
+let lightboxIndex = 0;
+
+window.handleImageUpload = function(event){
+  const files = Array.from(event.target.files);
+  if(!files.length) return;
+  const label = document.getElementById('uploadLabelText');
+  label.textContent = 'Uploading...';
+  let loaded = 0;
+  files.forEach(file => {
+    if(file.size > 2*1024*1024){ alert(`"${file.name}" is too large (max 2MB per image)`); loaded++; if(loaded===files.length) label.textContent='Click to attach images'; return; }
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentImages.push({data: e.target.result, name: file.name, type: file.type});
+      loaded++;
+      if(loaded === files.length){
+        label.textContent = 'Click to attach images';
+        renderImageThumbs(true);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+  event.target.value = '';
+};
+
+function renderImageThumbs(editable=true){
+  const list = document.getElementById('dImageList');
+  if(!list) return;
+  list.innerHTML = currentImages.map((img,i) => `
+    <div class="img-thumb-wrap" onclick="openLightbox(${i})">
+      <img src="${img.data}" alt="${img.name}" />
+      ${editable ? `<button class="img-thumb-del" onclick="event.stopPropagation();removeImage(${i})" title="Remove">✕</button>` : ''}
+    </div>`).join('');
+  lightboxImages = currentImages.map(img => img.data);
+}
+
+window.removeImage = function(i){
+  currentImages.splice(i, 1);
+  renderImageThumbs(true);
+};
+
+// Lightbox
+window.openLightbox = function(i){
+  lightboxIndex = i;
+  lightboxImages = currentImages.map(img => img.data);
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+};
+function updateLightbox(){
+  document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
+  document.getElementById('lightboxCounter').textContent = `${lightboxIndex+1} / ${lightboxImages.length}`;
+}
+window.lightboxPrev = function(){ lightboxIndex = (lightboxIndex-1+lightboxImages.length)%lightboxImages.length; updateLightbox(); };
+window.lightboxNext = function(){ lightboxIndex = (lightboxIndex+1)%lightboxImages.length; updateLightbox(); };
+window.closeLightbox = function(){ document.getElementById('lightbox').classList.remove('open'); };
+document.addEventListener('keydown', e => {
+  if(!document.getElementById('lightbox').classList.contains('open')) return;
+  if(e.key==='ArrowLeft') lightboxPrev();
+  if(e.key==='ArrowRight') lightboxNext();
+  if(e.key==='Escape') closeLightbox();
+});
+
+// Show images on task row
+function getTaskImageBadge(t){
+  if(!t.images || !t.images.length) return '';
+  return `<span class="task-time">📷 ${t.images.length}</span>`;
+}
 
 // ============ UTILS ============
 window.closeModal = function(id){ document.getElementById(id).classList.remove('open'); };
