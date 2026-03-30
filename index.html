@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TeamFlow — Storimatic Agency</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23f97316'/><text y='.9em' font-size='72' x='50%' text-anchor='middle' dominant-baseline='auto' dy='5'>⚡</text></svg>" />
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f5f4f0;--surface:#fff;--card:#fafaf8;--border:#e8e6e0;--border2:#d4d0c8;--text:#1a1916;--muted:#8a8780;--muted2:#c4c0b8;--accent:#2a5cff;--accent-s:rgba(42,92,255,.08);--green:#16a34a;--green-s:rgba(22,163,74,.1);--orange:#d97706;--orange-s:rgba(217,119,6,.1);--red:#dc2626;--red-s:rgba(220,38,38,.1);--purple:#7c3aed;--purple-s:rgba(124,58,237,.1);--shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);--shadow-lg:0 8px 32px rgba(0,0,0,.1);}
@@ -200,6 +201,9 @@ h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
 .lightbox-btn:hover{background:rgba(255,255,255,.2);}
 .lightbox-counter{color:rgba(255,255,255,.6);font-size:12px;}
 .upload-progress{font-size:11px;color:var(--accent);margin-top:4px;}
+/* Paste flash animation */
+@keyframes pasteFlash{0%{border-color:var(--accent);background:var(--accent-s)}100%{border-color:var(--border2);background:transparent}}
+.paste-flash{animation:pasteFlash .5s ease;}
 .login-screen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px;}
 .login-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;width:100%;max-width:380px;box-shadow:var(--shadow-lg);text-align:center;}
 .login-logo{font-family:'Roboto',sans-serif;font-weight:700;font-size:22px;font-weight:800;margin-bottom:4px;}
@@ -392,8 +396,8 @@ h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
     <div class="detail-field">
       <label>📎 Attachments</label>
       <div id="dImageList" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px"></div>
-      <label id="uploadLabel" style="display:flex;align-items:center;gap:8px;padding:9px 12px;border:1.5px dashed var(--border2);border-radius:8px;cursor:pointer;color:var(--muted);font-size:12px;transition:border-color .15s;text-transform:none;letter-spacing:0;font-weight:400">
-        <span>📷</span><span id="uploadLabelText">Click to attach images</span>
+      <label id="uploadLabel" style="display:flex;align-items:center;gap:8px;padding:9px 12px;border:1.5px dashed var(--border2);border-radius:8px;cursor:pointer;color:var(--muted);font-size:12px;transition:border-color .15s;text-transform:none;letter-spacing:0;font-weight:400" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+        <span>📷</span><span id="uploadLabelText">Click to attach  •  or Ctrl+V to paste</span>
         <input type="file" accept="image/*" multiple style="display:none" onchange="handleImageUpload(event)" />
       </label>
     </div>
@@ -1180,25 +1184,69 @@ let currentImages = []; // base64 images for current open task
 let lightboxImages = [];
 let lightboxIndex = 0;
 
-window.handleImageUpload = function(event){
-  const files = Array.from(event.target.files);
-  if(!files.length) return;
-  const label = document.getElementById('uploadLabelText');
-  label.textContent = 'Uploading...';
-  let loaded = 0;
-  files.forEach(file => {
-    if(file.size > 2*1024*1024){ alert(`"${file.name}" is too large (max 2MB per image)`); loaded++; if(loaded===files.length) label.textContent='Click to attach images'; return; }
+// ---- Paste (Ctrl+V) support ----
+document.addEventListener('paste', e => {
+  // only when detail panel is open and editable
+  const panel = document.getElementById('detailPanel');
+  if(!panel?.classList.contains('open')) return;
+  if(!canEdit()) return;
+  const items = Array.from(e.clipboardData?.items || []);
+  const imageItems = items.filter(i => i.type.startsWith('image/'));
+  if(!imageItems.length) return;
+  e.preventDefault();
+  showPasteFlash();
+  imageItems.forEach(item => {
+    const file = item.getAsFile();
+    if(!file) return;
     const reader = new FileReader();
-    reader.onload = e => {
-      currentImages.push({data: e.target.result, name: file.name, type: file.type});
-      loaded++;
-      if(loaded === files.length){
-        label.textContent = 'Click to attach images';
-        renderImageThumbs(true);
-      }
+    reader.onload = ev => {
+      currentImages.push({data: ev.target.result, name: 'pasted-image.png', type: file.type});
+      renderImageThumbs(true);
     };
     reader.readAsDataURL(file);
   });
+});
+
+// ---- Drag & drop support ----
+document.addEventListener('dragover', e => {
+  const panel = document.getElementById('detailPanel');
+  if(!panel?.classList.contains('open') || !canEdit()) return;
+  e.preventDefault();
+});
+document.addEventListener('drop', e => {
+  const panel = document.getElementById('detailPanel');
+  if(!panel?.classList.contains('open') || !canEdit()) return;
+  const files = Array.from(e.dataTransfer?.files||[]).filter(f=>f.type.startsWith('image/'));
+  if(!files.length) return;
+  e.preventDefault();
+  processImageFiles(files);
+});
+
+function showPasteFlash(){
+  const lbl = document.getElementById('uploadLabelText');
+  const label = document.getElementById('uploadLabel');
+  if(!lbl) return;
+  lbl.textContent = '✓ Image pasted!';
+  if(label){ label.classList.add('paste-flash'); setTimeout(()=>label.classList.remove('paste-flash'),500); }
+  setTimeout(()=>{ if(lbl) lbl.textContent = 'Click to attach  •  or Ctrl+V to paste'; }, 1500);
+}
+
+function processImageFiles(files){
+  files.forEach(file => {
+    if(file.size > 2*1024*1024){ alert(`"${file.name}" is too large (max 2MB)`); return; }
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentImages.push({data: e.target.result, name: file.name||'image.png', type: file.type});
+      renderImageThumbs(true);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+window.handleImageUpload = function(event){
+  const files = Array.from(event.target.files);
+  if(!files.length) return;
+  processImageFiles(files);
   event.target.value = '';
 };
 
