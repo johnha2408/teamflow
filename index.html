@@ -949,7 +949,7 @@ function renderTaskRow(t){
         ${proj?`<span class="task-proj" style="background:${proj.color}22;color:${proj.color}">${proj.name}</span>`:''}
         <span style="font-size:10px;color:${stC[t.status]};font-weight:500">${stL[t.status]}</span>
         ${t.note?'<span class="task-time">📝</span>':''}
-        ${t.images&&t.images.length?`<span class="task-time">📷 ${t.images.length}</span>`:''}
+        ${t.images&&Object.keys(t.images).length?`<span class="task-time">📷 ${Object.keys(t.images).length}</span>`:''}
       </div>
     </div>
     ${avatarHTML}
@@ -1021,7 +1021,7 @@ window.openDetail = function(id){
   if(!canEdit()){openDetailReadonly(id);return;}
   const t=TASKS[id]; if(!t) return;
   detailId=id; detailPrio=t.prio||'med';
-  currentImages = t.images ? JSON.parse(JSON.stringify(t.images)) : [];
+  currentImages = normalizeImages(t.images);
   document.getElementById('dTitle').value=t.title||'';
   document.getElementById('dNote').value=t.note||'';
   document.getElementById('dDate').value=t.date||todayStr();
@@ -1041,7 +1041,7 @@ window.openDetail = function(id){
 window.openDetailReadonly = function(id){
   const t=TASKS[id]; if(!t) return;
   detailId=id; detailPrio=t.prio||'med';
-  currentImages = t.images ? JSON.parse(JSON.stringify(t.images)) : [];
+  currentImages = normalizeImages(t.images);
   document.getElementById('dTitle').value=t.title||'';
   document.getElementById('dNote').value=t.note||'(No notes)';
   document.getElementById('dDate').value=t.date||todayStr();
@@ -1070,7 +1070,25 @@ function getSelAssign(){ const el=document.querySelector('.assignee-chip.sel'); 
 window.saveDetail = async function(){
   if(!canEdit()){alert('You do not have permission.');return;}
   if(!detailId) return;
-  await fbUpdate(`tasks/${detailId}`,{title:document.getElementById('dTitle').value.trim(),note:document.getElementById('dNote').value,date:document.getElementById('dDate').value,project:document.getElementById('dProject').value,prio:detailPrio,assign:getSelAssign(),status:document.getElementById('dStatus').value,images:currentImages.length?currentImages:null});
+  const existing = TASKS[detailId] || {};
+  // Use fbSet on full task path to properly save arrays (images)
+  const updated = {
+    ...existing,
+    title: document.getElementById('dTitle').value.trim() || existing.title,
+    note: document.getElementById('dNote').value,
+    date: document.getElementById('dDate').value,
+    project: document.getElementById('dProject').value,
+    prio: detailPrio,
+    assign: getSelAssign(),
+    status: document.getElementById('dStatus').value,
+  };
+  // Handle images separately — null removes field, array saves it
+  if(currentImages.length > 0){
+    updated.images = currentImages;
+  } else {
+    delete updated.images;
+  }
+  await fbSet(`tasks/${detailId}`, updated);
   closeDetail();
 };
 
@@ -1250,12 +1268,22 @@ window.handleImageUpload = function(event){
   event.target.value = '';
 };
 
+function normalizeImages(imgs){
+  if(!imgs) return [];
+  // Firebase sometimes returns object {0:{...},1:{...}} instead of array
+  if(Array.isArray(imgs)) return imgs;
+  return Object.values(imgs);
+}
+
 function renderImageThumbs(editable=true){
   const list = document.getElementById('dImageList');
   if(!list) return;
-  list.innerHTML = currentImages.map((img,i) => `
+  currentImages = normalizeImages(currentImages);
+  list.innerHTML = currentImages.length === 0
+    ? ''
+    : currentImages.map((img,i) => `
     <div class="img-thumb-wrap" onclick="openLightbox(${i})">
-      <img src="${img.data}" alt="${img.name}" />
+      <img src="${img.data}" alt="${img.name||'image'}" />
       ${editable ? `<button class="img-thumb-del" onclick="event.stopPropagation();removeImage(${i})" title="Remove">✕</button>` : ''}
     </div>`).join('');
   lightboxImages = currentImages.map(img => img.data);
