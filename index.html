@@ -87,7 +87,7 @@ h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
 .task-body{flex:1;min-width:0;}
 .task-title{font-size:13px;color:var(--text);line-height:1.4;}
 .task-meta{display:flex;align-items:center;gap:5px;margin-top:3px;flex-wrap:wrap;}
-.task-proj{font-size:10px;padding:2px 6px;border-radius:99px;font-weight:500;}
+.task-proj{font-size:10px;padding:3px 8px;border-radius:5px;font-weight:700;color:#fff!important;letter-spacing:.2px;}
 .task-time{font-size:10px;color:var(--muted);}
 .task-assignee{width:20px;height:20px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .task-actions{display:flex;gap:4px;align-items:center;flex-shrink:0;opacity:0;transition:opacity .12s;}
@@ -266,6 +266,70 @@ h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
   .proj-grid{grid-template-columns:1fr;}
   .kpi-grid{grid-template-columns:1fr;}
 }
+
+/* ===== KANBAN ===== */
+.kanban-board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start;overflow-x:auto;}
+.kanban-col{background:var(--bg);border-radius:12px;overflow:hidden;min-height:200px;}
+.kanban-col-hd{padding:12px 14px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;border-bottom:1px solid var(--border);background:var(--surface);}
+.kanban-col-hd .kcol-badge{margin-left:auto;font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;}
+.kanban-col-body{padding:8px;display:flex;flex-direction:column;gap:6px;min-height:120px;}
+.kanban-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 13px;cursor:pointer;transition:all .15s;position:relative;animation:fadeIn .2s ease;}
+.kanban-card:hover{box-shadow:var(--shadow);transform:translateY(-1px);}
+.kanban-card.dragging{opacity:.4;transform:scale(.97);}
+.kanban-col-body.drag-over{background:var(--accent-s);border:2px dashed var(--accent);border-radius:10px;}
+.kcard-title{font-size:12px;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:7px;}
+.kcard-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.kcard-proj{font-size:9px;padding:2px 7px;border-radius:4px;font-weight:700;color:#fff;}
+.kcard-assignee{width:18px;height:18px;border-radius:50%;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+.kcard-prio{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.kcard-date{font-size:9px;color:var(--muted);}
+.kanban-empty{padding:20px 12px;text-align:center;font-size:11px;color:var(--muted2);}
+
+/* ===== CALENDAR ===== */
+.cal-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.cal-hd{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.cal-hd h3{font-size:15px;font-weight:700;flex:1;}
+.cal-nav-btn{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:5px 12px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .15s;}
+.cal-nav-btn:hover{color:var(--text);border-color:var(--border2);}
+.cal-toggle{display:flex;gap:2px;padding:3px;background:var(--bg);border-radius:8px;}
+.cal-toggle-btn{padding:4px 12px;border-radius:6px;font-size:11px;font-weight:500;cursor:pointer;color:var(--muted);transition:all .15s;}
+.cal-toggle-btn.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.cal-grid-hd{display:grid;grid-template-columns:repeat(7,1fr);background:var(--bg);}
+.cal-dow{padding:8px 4px;text-align:center;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
+.cal-day{min-height:80px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:6px;cursor:pointer;transition:background .1s;position:relative;}
+.cal-day:hover{background:var(--bg);}
+.cal-day.today .cal-day-num{background:var(--accent);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;}
+.cal-day.other-month .cal-day-num{color:var(--muted2);}
+.cal-day-num{font-size:12px;font-weight:600;margin-bottom:3px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;}
+.cal-task-dot{font-size:10px;padding:1px 5px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;font-weight:600;cursor:pointer;}
+.cal-more{font-size:9px;color:var(--accent);font-weight:600;cursor:pointer;}
+
+/* Weekly */
+.cal-week-grid{display:grid;grid-template-columns:48px repeat(7,1fr);}
+.cal-week-hd{padding:8px 4px;text-align:center;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+.cal-week-hd.today-col{color:var(--accent);}
+.cal-time-slot{padding:2px 4px;font-size:9px;color:var(--muted2);text-align:right;border-bottom:1px solid var(--border);line-height:24px;}
+.cal-week-cell{border-left:1px solid var(--border);border-bottom:1px solid var(--border);min-height:24px;position:relative;cursor:pointer;}
+.cal-week-cell:hover{background:var(--bg);}
+.cal-week-task{font-size:9px;padding:2px 5px;border-radius:3px;margin:1px;color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+
+/* Day detail popup */
+.cal-popup{position:fixed;z-index:60;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;width:280px;box-shadow:var(--shadow-lg);animation:fadeIn .15s ease;}
+.cal-popup-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cal-popup-hd h4{font-size:13px;font-weight:700;}
+.cal-popup-close{background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;}
+.cal-popup-task{padding:7px 10px;background:var(--bg);border-radius:8px;margin-bottom:5px;cursor:pointer;transition:background .12s;}
+.cal-popup-task:hover{background:var(--border);}
+.cal-popup-title{font-size:12px;font-weight:500;}
+.cal-popup-meta{font-size:10px;color:var(--muted);margin-top:2px;}
+
+@media(max-width:768px){
+  .kanban-board{grid-template-columns:repeat(2,1fr);}
+  .cal-day{min-height:50px;}
+  .cal-task-dot{display:none;}
+}
+
 </style>
 </head>
 <body>
@@ -460,6 +524,14 @@ h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
     <div class="sb-item" onclick="setView('report',this)">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       Reports <span class="sb-badge">KPI</span>
+    </div>
+    <div class="sb-item" onclick="setView('kanban',this)">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>
+      Kanban
+    </div>
+    <div class="sb-item" onclick="setView('calendar',this)">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="8" cy="15" r="1" fill="currentColor"/><circle cx="12" cy="15" r="1" fill="currentColor"/><circle cx="16" cy="15" r="1" fill="currentColor"/></svg>
+      Calendar
     </div>
   </div>
   <div class="sb-section">
@@ -689,6 +761,8 @@ function render(){
   else if(currentView==='all') c.innerHTML=renderAllView();
   else if(currentView==='projects') c.innerHTML=renderProjectsView();
   else if(currentView==='report') c.innerHTML=renderReportView();
+  else if(currentView==='kanban') c.innerHTML=renderKanbanView();
+  else if(currentView==='calendar') c.innerHTML=renderCalendarView();
   else if(currentView.startsWith('proj:')) c.innerHTML=renderProjDetail(currentView.slice(5));
   else if(currentView.startsWith('member:')) c.innerHTML=renderMemberView(currentView.slice(7));
 }
@@ -696,7 +770,7 @@ function render(){
 function updateTopbar(){
   const d=new Date();
   document.getElementById('topDate').textContent=d.toLocaleDateString('vi-VN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const titles={today:'Today',all:'All Tasks',projects:'Projects',report:'Reports & KPI'};
+  const titles={today:'Today',all:'All Tasks',projects:'Projects',report:'Reports & KPI',kanban:'Kanban Board',calendar:'Calendar'};
   let title=titles[currentView]||'';
   if(!title&&currentView.startsWith('proj:')) title=PROJECTS.find(p=>p.id===currentView.slice(5))?.name||'';
   if(!title&&currentView.startsWith('member:')) title='👤 '+MEMBERS.find(m=>m.id===currentView.slice(7))?.name||'';
@@ -917,6 +991,267 @@ function renderReportView(){
   <div class="proj-report-grid">${PROJECTS.map(p=>{const pt=tasks.filter(t=>t.project===p.id),pd=pt.filter(t=>t.status==='done').length,pct2=pt.length?Math.round(pd/pt.length*100):0;return`<div class="proj-report-card"><div class="proj-report-head"><div style="width:10px;height:10px;border-radius:50%;background:${p.color}"></div><div class="proj-report-name">${p.name}</div><div style="font-family:'Roboto',sans-serif;font-weight:700;font-size:18px;font-weight:800;color:${p.color}">${pct2}%</div></div><div class="proj-stat-row"><span class="proj-stat-label">Total</span><span class="proj-stat-val">${pt.length}</span></div><div class="proj-stat-row"><span class="proj-stat-label">Done</span><span class="proj-stat-val" style="color:var(--green)">${pd}</span></div><div class="proj-bar"><div class="proj-bar-fill" style="width:${pct2}%;background:${p.color}"></div></div></div>`;}).join('')}</div>`;
 }
 
+
+// ============ KANBAN VIEW ============
+function renderKanbanView(){
+  const cols = [
+    {id:'todo',      label:'To Do',      color:'var(--muted)', bg:'rgba(139,135,128,.12)'},
+    {id:'inprogress',label:'In Progress',color:'var(--accent)',bg:'var(--accent-s)'},
+    {id:'review',    label:'Review',     color:'var(--orange)',bg:'var(--orange-s)'},
+    {id:'done',      label:'Done',       color:'var(--green)', bg:'var(--green-s)'},
+  ];
+  const tasks = getTasksArray();
+  const byStatus = {todo:[],inprogress:[],review:[],done:[]};
+  tasks.forEach(t=>{ if(byStatus[t.status]) byStatus[t.status].push(t); });
+
+  const colsHTML = cols.map(col => {
+    const colTasks = byStatus[col.id] || [];
+    const cardsHTML = colTasks.length
+      ? colTasks.map(t => renderKanbanCard(t)).join('')
+      : `<div class="kanban-empty">No tasks</div>`;
+    return `
+    <div class="kanban-col" id="kcol_${col.id}"
+      ondragover="event.preventDefault();document.getElementById('kcol_${col.id}').querySelector('.kanban-col-body').classList.add('drag-over')"
+      ondragleave="document.getElementById('kcol_${col.id}').querySelector('.kanban-col-body').classList.remove('drag-over')"
+      ondrop="dropTask(event,'${col.id}')">
+      <div class="kanban-col-hd" style="border-top:3px solid ${col.color}">
+        <span style="color:${col.color}">${col.label}</span>
+        <span class="kcol-badge" style="background:${col.bg};color:${col.color}">${colTasks.length}</span>
+      </div>
+      <div class="kanban-col-body" id="kbody_${col.id}">${cardsHTML}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div style="margin-bottom:14px;display:flex;align-items:center;gap:8px">
+    <div style="font-size:12px;color:var(--muted)">${tasks.length} total tasks · Drag cards to change status</div>
+    <div style="margin-left:auto;display:flex;gap:6px">
+      ${PROJECTS.map(p=>`<span style="background:${p.color};color:#fff;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700">${p.name}</span>`).join('')}
+    </div>
+  </div>
+  <div class="kanban-board">${colsHTML}</div>`;
+}
+
+function renderKanbanCard(t){
+  const proj = PROJECTS.find(p=>p.id===t.project);
+  const m = MEMBERS.find(x=>x.id===t.assign);
+  const avatarHTML = m ? (m.photo
+    ? `<div style="width:18px;height:18px;border-radius:50%;overflow:hidden;flex-shrink:0"><img src="${m.photo}" style="width:100%;height:100%;object-fit:cover"/></div>`
+    : `<div class="kcard-assignee" style="background:${m.color}22;color:${m.color}">${m.short}</div>`)
+    : '';
+  const prioC = {high:'var(--red)',med:'var(--orange)',low:'var(--green)'};
+  return `
+  <div class="kanban-card" draggable="true"
+    ondragstart="dragStart(event,'${t.id}')"
+    ondragend="dragEnd(event)"
+    onclick="openDetail('${t.id}')">
+    <div class="kcard-title">${t.title}</div>
+    <div class="kcard-meta">
+      ${proj?`<span class="kcard-proj" style="background:${proj.color}">${proj.name}</span>`:''}
+      ${t.date?`<span class="kcard-date">${fmtDate(t.date)}</span>`:''}
+      <div style="margin-left:auto;display:flex;align-items:center;gap:4px">
+        <div class="kcard-prio" style="background:${prioC[t.prio]||'var(--muted)'}"></div>
+        ${avatarHTML}
+      </div>
+    </div>
+    ${t.images&&Object.keys(t.images).length?`<div style="font-size:9px;color:var(--muted);margin-top:4px">📷 ${Object.keys(t.images).length} image${Object.keys(t.images).length>1?'s':''}</div>`:''}
+  </div>`;
+}
+
+// Drag & Drop for Kanban
+let dragTaskId = null;
+window.dragStart = function(e, id){ dragTaskId=id; setTimeout(()=>{ const el=document.getElementById('tr_'+id)||e.target; el.classList.add('dragging'); },0); };
+window.dragEnd   = function(e){ e.target.classList.remove('dragging'); document.querySelectorAll('.kanban-col-body').forEach(b=>b.classList.remove('drag-over')); };
+window.dropTask  = async function(e, newStatus){
+  e.preventDefault();
+  document.querySelectorAll('.kanban-col-body').forEach(b=>b.classList.remove('drag-over'));
+  if(!dragTaskId) return;
+  const t = TASKS[dragTaskId];
+  if(!t || t.status===newStatus) return;
+  await fbUpdate(`tasks/${dragTaskId}`,{status:newStatus});
+  dragTaskId=null;
+};
+
+// ============ CALENDAR VIEW ============
+let calMode = 'month'; // 'month' | 'week'
+let calYear, calMonth, calWeekStart;
+
+function initCalDate(){
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  // week start = this Monday
+  calWeekStart = new Date(now);
+  calWeekStart.setDate(now.getDate() - ((now.getDay()+6)%7));
+  calWeekStart.setHours(0,0,0,0);
+}
+
+function renderCalendarView(){
+  if(!calYear) initCalDate();
+  return calMode==='month' ? renderMonthCal() : renderWeekCal();
+}
+
+function calHeader(title){
+  return `
+  <div class="cal-hd">
+    <h3>${title}</h3>
+    <button class="cal-nav-btn" onclick="calNav(-1)">←</button>
+    <button class="cal-nav-btn" onclick="calNavToday()">Today</button>
+    <button class="cal-nav-btn" onclick="calNav(1)">→</button>
+    <div class="cal-toggle">
+      <div class="cal-toggle-btn ${calMode==='month'?'active':''}" onclick="setCalMode('month')">Month</div>
+      <div class="cal-toggle-btn ${calMode==='week'?'active':''}" onclick="setCalMode('week')">Week</div>
+    </div>
+  </div>`;
+}
+
+function renderMonthCal(){
+  const DOWS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const now = new Date();
+  const monthName = new Date(calYear,calMonth,1).toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  // First day of month (0=Sun..6=Sat), adjust to Mon=0
+  const firstDay = new Date(calYear,calMonth,1);
+  const startOffset = (firstDay.getDay()+6)%7;
+  const daysInMonth = new Date(calYear,calMonth+1,0).getDate();
+  const daysInPrev = new Date(calYear,calMonth,0).getDate();
+  const tasks = getTasksArray();
+
+  const dowsHTML = DOWS.map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  let daysHTML='';
+  let totalCells = Math.ceil((startOffset+daysInMonth)/7)*7;
+
+  for(let i=0;i<totalCells;i++){
+    let day, month=calMonth, year=calYear, otherMonth=false;
+    if(i<startOffset){ day=daysInPrev-startOffset+i+1; month=calMonth-1; otherMonth=true; if(month<0){month=11;year--;} }
+    else if(i>=startOffset+daysInMonth){ day=i-startOffset-daysInMonth+1; month=calMonth+1; otherMonth=true; if(month>11){month=0;year++;} }
+    else{ day=i-startOffset+1; }
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const isToday = dateStr===todate(now);
+    const dayTasks = tasks.filter(t=>t.date===dateStr);
+    const dotsHTML = dayTasks.slice(0,3).map(t=>{
+      const proj=PROJECTS.find(p=>p.id===t.project);
+      return `<div class="cal-task-dot" style="background:${proj?.color||'var(--muted)'}" onclick="event.stopPropagation();openDetail('${t.id}')" title="${t.title}">${t.title.length>18?t.title.slice(0,16)+'…':t.title}</div>`;
+    }).join('');
+    const moreHTML = dayTasks.length>3?`<div class="cal-more">+${dayTasks.length-3} more</div>`:'';
+    daysHTML+=`<div class="cal-day ${isToday?'today':''} ${otherMonth?'other-month':''}" onclick="showCalPopup(event,'${dateStr}')">
+      <div class="cal-day-num">${day}</div>
+      ${dotsHTML}${moreHTML}
+    </div>`;
+  }
+
+  return `<div class="cal-wrap">${calHeader(monthName)}
+    <div class="cal-grid-hd">${dowsHTML}</div>
+    <div class="cal-grid">${daysHTML}</div>
+  </div>`;
+}
+
+function renderWeekCal(){
+  const DOWS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const now=new Date();
+  const days=Array.from({length:7},(_,i)=>{const d=new Date(calWeekStart);d.setDate(calWeekStart.getDate()+i);return d;});
+  const weekLabel=`${days[0].toLocaleDateString('en-GB',{day:'numeric',month:'short'})} – ${days[6].toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}`;
+  const tasks=getTasksArray();
+
+  const hdHTML=`<div class="cal-week-hd"></div>`+days.map((d,i)=>{
+    const isToday=todate(d)===todate(now);
+    return `<div class="cal-week-hd ${isToday?'today-col':''}">${DOWS[i]}<br><span style="font-size:14px;font-weight:800">${d.getDate()}</span></div>`;
+  }).join('');
+
+  // group tasks by day
+  let rowsHTML='';
+  const HOURS=[8,9,10,11,12,13,14,15,16,17,18,19];
+  for(const h of HOURS){
+    rowsHTML+=`<div class="cal-time-slot">${h}:00</div>`;
+    days.forEach(d=>{
+      const ds=todate(d);
+      const dayTasks=tasks.filter(t=>t.date===ds);
+      const taskHTML=dayTasks.filter(t=>{
+        if(!t.time) return false;
+        const startH=parseInt(t.time.split(':')[0]);
+        return startH===h;
+      }).map(t=>{
+        const proj=PROJECTS.find(p=>p.id===t.project);
+        return `<div class="cal-week-task" style="background:${proj?.color||'var(--muted)'}" onclick="openDetail('${t.id}')" title="${t.title}">${t.title.length>16?t.title.slice(0,14)+'…':t.title}</div>`;
+      }).join('');
+      rowsHTML+=`<div class="cal-week-cell">${taskHTML}</div>`;
+    });
+  }
+  // all-day tasks (no time)
+  let allDayHTML=`<div class="cal-time-slot" style="font-size:8px">all day</div>`;
+  days.forEach(d=>{
+    const ds=todate(d);
+    const dayTasks=tasks.filter(t=>t.date===ds&&!t.time);
+    allDayHTML+=`<div class="cal-week-cell" style="padding:2px">${dayTasks.slice(0,2).map(t=>{
+      const proj=PROJECTS.find(p=>p.id===t.project);
+      return `<div class="cal-week-task" style="background:${proj?.color||'var(--muted)'}" onclick="openDetail('${t.id}')">${t.title.length>14?t.title.slice(0,12)+'…':t.title}</div>`;
+    }).join('')}${dayTasks.length>2?`<div style="font-size:9px;color:var(--accent)">+${dayTasks.length-2}</div>`:''}</div>`;
+  });
+
+  return `<div class="cal-wrap">${calHeader(weekLabel)}
+    <div class="cal-week-grid" style="border-bottom:1px solid var(--border)">${hdHTML}</div>
+    <div class="cal-week-grid" style="border-bottom:2px solid var(--border)">${allDayHTML}</div>
+    <div class="cal-week-grid" style="max-height:500px;overflow-y:auto">${rowsHTML}</div>
+  </div>`;
+}
+
+window.setCalMode = function(m){ calMode=m; render(); };
+window.calNav = function(dir){
+  if(calMode==='month'){
+    calMonth+=dir;
+    if(calMonth>11){calMonth=0;calYear++;}
+    if(calMonth<0){calMonth=11;calYear--;}
+  } else {
+    calWeekStart=new Date(calWeekStart);
+    calWeekStart.setDate(calWeekStart.getDate()+dir*7);
+  }
+  render();
+};
+window.calNavToday = function(){
+  const now=new Date();
+  calYear=now.getFullYear(); calMonth=now.getMonth();
+  calWeekStart=new Date(now); calWeekStart.setDate(now.getDate()-((now.getDay()+6)%7)); calWeekStart.setHours(0,0,0,0);
+  render();
+};
+
+// Calendar day popup
+let calPopup = null;
+window.showCalPopup = function(e, dateStr){
+  removeCalPopup();
+  const tasks=getTasksArray().filter(t=>t.date===dateStr);
+  if(!tasks.length) return;
+  const d=new Date(dateStr+'T00:00:00');
+  const label=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+  const el=document.createElement('div');
+  el.className='cal-popup';
+  el.innerHTML=`
+    <div class="cal-popup-hd">
+      <h4>📅 ${label}</h4>
+      <button class="cal-popup-close" onclick="removeCalPopup()">✕</button>
+    </div>
+    ${tasks.map(t=>{
+      const proj=PROJECTS.find(p=>p.id===t.project);
+      const m=MEMBERS.find(x=>x.id===t.assign);
+      return `<div class="cal-popup-task" onclick="removeCalPopup();openDetail('${t.id}')">
+        <div style="display:flex;align-items:center;gap:6px">
+          ${proj?`<span style="background:${proj.color};color:#fff;font-size:9px;padding:1px 6px;border-radius:3px;font-weight:700">${proj.name}</span>`:''}
+          <span style="font-size:9px;color:var(--muted)">${t.time||''}</span>
+        </div>
+        <div class="cal-popup-title">${t.title}</div>
+        <div class="cal-popup-meta">${m?m.name:''} · ${t.status}</div>
+      </div>`;
+    }).join('')}`;
+  // position near click
+  const rect=e.target.closest('.cal-day')?.getBoundingClientRect()||{left:e.clientX,top:e.clientY};
+  el.style.left=Math.min(rect.left,window.innerWidth-300)+'px';
+  el.style.top=Math.min(rect.bottom+4,window.innerHeight-350)+'px';
+  document.body.appendChild(el);
+  calPopup=el;
+  setTimeout(()=>document.addEventListener('click',removeCalPopupOnOutside),10);
+};
+function removeCalPopupOnOutside(e){ if(calPopup&&!calPopup.contains(e.target)){removeCalPopup();} }
+window.removeCalPopup=function(){ if(calPopup){calPopup.remove();calPopup=null;document.removeEventListener('click',removeCalPopupOnOutside);} };
+
+
 window.setReportPeriod = function(p){ reportPeriod=p; render(); };
 
 // ============ TASK ROW ============
@@ -946,7 +1281,7 @@ function renderTaskRow(t){
     <div class="task-body">
       <div class="task-title">${t.title}</div>
       <div class="task-meta">
-        ${proj?`<span class="task-proj" style="background:${proj.color}22;color:${proj.color}">${proj.name}</span>`:''}
+        ${proj?`<span class="task-proj" style="background:${proj.color}">${proj.name}</span>`:''}
         <span style="font-size:10px;color:${stC[t.status]};font-weight:500">${stL[t.status]}</span>
         ${t.note?'<span class="task-time">📝</span>':''}
         ${t.images&&Object.keys(t.images).length?`<span class="task-time">📷 ${Object.keys(t.images).length}</span>`:''}
