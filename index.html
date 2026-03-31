@@ -284,6 +284,9 @@ h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
 .kcard-prio{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
 .kcard-date{font-size:9px;color:var(--muted);}
 .kanban-empty{padding:20px 12px;text-align:center;font-size:11px;color:var(--muted2);}
+.kfilter-chip{padding:4px 10px;border-radius:99px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);color:var(--muted);background:var(--bg);transition:all .12s;user-select:none;white-space:nowrap;}
+.kfilter-chip:hover{border-color:var(--border2);color:var(--text);}
+.kfilter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 
 /* ===== CALENDAR ===== */
 .cal-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
@@ -806,6 +809,8 @@ window.setView = function(v, el){
   currentView=v;
   document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
   if(el) el.classList.add('active');
+  // reset kanban filters when leaving kanban
+  if(v!=='kanban'){ kanbanFilterMember=''; kanbanFilterProject=''; }
   closeSidebar();
   render();
 };
@@ -993,6 +998,10 @@ function renderReportView(){
 
 
 // ============ KANBAN VIEW ============
+// Kanban filter state
+let kanbanFilterMember = '';
+let kanbanFilterProject = '';
+
 function renderKanbanView(){
   const cols = [
     {id:'todo',      label:'To Do',      color:'var(--muted)', bg:'rgba(139,135,128,.12)'},
@@ -1000,7 +1009,13 @@ function renderKanbanView(){
     {id:'review',    label:'Review',     color:'var(--orange)',bg:'var(--orange-s)'},
     {id:'done',      label:'Done',       color:'var(--green)', bg:'var(--green-s)'},
   ];
-  const tasks = getTasksArray();
+
+  // Apply filters
+  let tasks = getTasksArray();
+  if(kanbanFilterMember)  tasks = tasks.filter(t=>t.assign===kanbanFilterMember);
+  if(kanbanFilterProject) tasks = tasks.filter(t=>t.project===kanbanFilterProject);
+  const totalAll = getTasksArray().length;
+
   const byStatus = {todo:[],inprogress:[],review:[],done:[]};
   tasks.forEach(t=>{ if(byStatus[t.status]) byStatus[t.status].push(t); });
 
@@ -1011,8 +1026,8 @@ function renderKanbanView(){
       : `<div class="kanban-empty">No tasks</div>`;
     return `
     <div class="kanban-col" id="kcol_${col.id}"
-      ondragover="event.preventDefault();document.getElementById('kcol_${col.id}').querySelector('.kanban-col-body').classList.add('drag-over')"
-      ondragleave="document.getElementById('kcol_${col.id}').querySelector('.kanban-col-body').classList.remove('drag-over')"
+      ondragover="event.preventDefault();document.getElementById('kbody_${col.id}').classList.add('drag-over')"
+      ondragleave="document.getElementById('kbody_${col.id}').classList.remove('drag-over')"
       ondrop="dropTask(event,'${col.id}')">
       <div class="kanban-col-hd" style="border-top:3px solid ${col.color}">
         <span style="color:${col.color}">${col.label}</span>
@@ -1022,12 +1037,47 @@ function renderKanbanView(){
     </div>`;
   }).join('');
 
+  // Filter bar
+  const memberFilters = `
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Member:</span>
+      <div class="kfilter-chip ${!kanbanFilterMember?'active':''}" onclick="setKanbanFilter('member','')">All</div>
+      ${MEMBERS.map(m=>{
+        const av = m.photo
+          ? `<img src="${m.photo}" style="width:16px;height:16px;border-radius:50%;object-fit:cover" />`
+          : `<div style="width:16px;height:16px;border-radius:50%;background:${m.color};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff">${m.short}</div>`;
+        return `<div class="kfilter-chip ${kanbanFilterMember===m.id?'active':''}" onclick="setKanbanFilter('member','${m.id}')" style="${kanbanFilterMember===m.id?`background:${m.color};border-color:${m.color};color:#fff`:''}">
+          <div style="display:flex;align-items:center;gap:4px">${av}<span>${m.name}</span></div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  const projectFilters = `
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Project:</span>
+      <div class="kfilter-chip ${!kanbanFilterProject?'active':''}" onclick="setKanbanFilter('project','')">All</div>
+      ${PROJECTS.map(p=>`
+        <div class="kfilter-chip ${kanbanFilterProject===p.id?'active':''}" onclick="setKanbanFilter('project','${p.id}')"
+          style="${kanbanFilterProject===p.id?`background:${p.color};border-color:${p.color};color:#fff`:''}">
+          <div style="display:flex;align-items:center;gap:4px">
+            <div style="width:8px;height:8px;border-radius:50%;background:${p.color};flex-shrink:0"></div>
+            <span>${p.name}</span>
+          </div>
+        </div>`).join('')}
+    </div>`;
+
+  const activeFilters = (kanbanFilterMember||kanbanFilterProject);
+  const shownCount = tasks.length;
+
   return `
-  <div style="margin-bottom:14px;display:flex;align-items:center;gap:8px">
-    <div style="font-size:12px;color:var(--muted)">${tasks.length} total tasks · Drag cards to change status</div>
-    <div style="margin-left:auto;display:flex;gap:6px">
-      ${PROJECTS.map(p=>`<span style="background:${p.color};color:#fff;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700">${p.name}</span>`).join('')}
-    </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;flex-direction:column;gap:10px">
+    ${memberFilters}
+    <div style="height:1px;background:var(--border)"></div>
+    ${projectFilters}
+    ${activeFilters?`<div style="display:flex;align-items:center;gap:8px;padding-top:2px">
+      <span style="font-size:11px;color:var(--muted)">Showing <strong>${shownCount}</strong> of ${totalAll} tasks</span>
+      <button onclick="setKanbanFilter('reset','')" style="background:var(--red-s);color:var(--red);border:none;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-weight:500">✕ Clear filters</button>
+    </div>`:'<div style="font-size:11px;color:var(--muted)">${totalAll} total tasks · Drag cards to move between columns</div>'}
   </div>
   <div class="kanban-board">${colsHTML}</div>`;
 }
@@ -1058,7 +1108,12 @@ function renderKanbanCard(t){
   </div>`;
 }
 
-// Drag & Drop for Kanban
+window.setKanbanFilter = function(type, val){
+  if(type==='member')  kanbanFilterMember = val;
+  else if(type==='project') kanbanFilterProject = val;
+  else if(type==='reset'){ kanbanFilterMember=''; kanbanFilterProject=''; }
+  render();
+};
 let dragTaskId = null;
 window.dragStart = function(e, id){ dragTaskId=id; setTimeout(()=>{ const el=document.getElementById('tr_'+id)||e.target; el.classList.add('dragging'); },0); };
 window.dragEnd   = function(e){ e.target.classList.remove('dragging'); document.querySelectorAll('.kanban-col-body').forEach(b=>b.classList.remove('drag-over')); };
