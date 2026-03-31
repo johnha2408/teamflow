@@ -333,6 +333,24 @@ h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
   .cal-task-dot{display:none;}
 }
 
+
+/* ── DONE COLLAPSE ── */
+.done-toggle-row{padding:8px 16px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;border-top:1px solid var(--border);transition:background .12s;}
+.done-toggle-row:hover{background:var(--bg);}
+.done-toggle-label{font-size:11px;color:var(--green);font-weight:600;flex:1;}
+.done-toggle-arrow{font-size:11px;color:var(--muted);transition:transform .2s;}
+.done-toggle-arrow.open{transform:rotate(90deg);}
+.done-tasks-wrap{overflow:hidden;transition:max-height .3s ease;}
+/* ── ARCHIVE ── */
+.archive-period{margin-bottom:20px;}
+.archive-period-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.archive-period-label{font-size:13px;font-weight:700;}
+.archive-period-count{font-size:11px;color:var(--muted);}
+.archive-filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.archive-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;}
+.archive-stat-num{font-size:22px;font-weight:800;letter-spacing:-1px;}
+.archive-stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;}
+
 </style>
 </head>
 <body>
@@ -531,6 +549,10 @@ h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
     <div class="sb-item" onclick="setView('kanban',this)">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>
       Kanban
+    </div>
+    <div class="sb-item" onclick="setView('archive',this)">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+      Archive <span class="sb-badge" id="archiveBadge" style="background:var(--green-s);color:var(--green)">0</span>
     </div>
     <div class="sb-item" onclick="setView('calendar',this)">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="8" cy="15" r="1" fill="currentColor"/><circle cx="12" cy="15" r="1" fill="currentColor"/><circle cx="16" cy="15" r="1" fill="currentColor"/></svg>
@@ -766,6 +788,7 @@ function render(){
   else if(currentView==='report') c.innerHTML=renderReportView();
   else if(currentView==='kanban') c.innerHTML=renderKanbanView();
   else if(currentView==='calendar') c.innerHTML=renderCalendarView();
+  else if(currentView==='archive') c.innerHTML=renderArchiveView();
   else if(currentView.startsWith('proj:')) c.innerHTML=renderProjDetail(currentView.slice(5));
   else if(currentView.startsWith('member:')) c.innerHTML=renderMemberView(currentView.slice(7));
 }
@@ -773,7 +796,7 @@ function render(){
 function updateTopbar(){
   const d=new Date();
   document.getElementById('topDate').textContent=d.toLocaleDateString('vi-VN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const titles={today:'Today',all:'All Tasks',projects:'Projects',report:'Reports & KPI',kanban:'Kanban Board',calendar:'Calendar'};
+  const titles={today:'Today',all:'All Tasks',projects:'Projects',report:'Reports & KPI',kanban:'Kanban Board',calendar:'Calendar',archive:'✅ Archive — Done Tasks'};
   let title=titles[currentView]||'';
   if(!title&&currentView.startsWith('proj:')) title=PROJECTS.find(p=>p.id===currentView.slice(5))?.name||'';
   if(!title&&currentView.startsWith('member:')) title='👤 '+MEMBERS.find(m=>m.id===currentView.slice(7))?.name||'';
@@ -803,6 +826,9 @@ function updateBadge(){
   const rem=getTasksArray().filter(t=>t.date===todayStr()&&t.status!=='done').length;
   const el=document.getElementById('todayBadge');
   if(el) el.textContent=rem;
+  const doneCount=getTasksArray().filter(t=>t.status==='done').length;
+  const ab=document.getElementById('archiveBadge');
+  if(ab) ab.textContent=doneCount;
 }
 
 window.setView = function(v, el){
@@ -825,8 +851,15 @@ function renderTodayView(){
   let tasksHTML='';
   Object.keys(byProj).forEach(pid=>{
     const proj=PROJECTS.find(p=>p.id===pid);
+    const activeTasks = byProj[pid].filter(t=>t.status!=='done');
+    const doneTasks   = byProj[pid].filter(t=>t.status==='done');
     tasksHTML+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;
-    tasksHTML+=filterTasks(byProj[pid]).map(t=>renderTaskRow(t)).join('');
+    tasksHTML+=filterTasks(activeTasks).map(t=>renderTaskRow(t)).join('');
+    if(doneTasks.length && currentFilter!=='done'){
+      tasksHTML+=renderDoneCollapse(pid+'_today', doneTasks);
+    } else if(currentFilter==='done'){
+      tasksHTML+=doneTasks.map(t=>renderTaskRow(t)).join('');
+    }
   });
   if(!tasksHTML) tasksHTML='<div class="empty"><div class="ei">✨</div>No tasks today</div>';
   return `
@@ -868,7 +901,18 @@ function renderAllView(){
   const byProj={};
   filtered.forEach(t=>{if(!byProj[t.project])byProj[t.project]=[];byProj[t.project].push(t);});
   let html='';
-  Object.keys(byProj).forEach(pid=>{const proj=PROJECTS.find(p=>p.id===pid);html+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;html+=byProj[pid].map(t=>renderTaskRow(t)).join('');});
+  Object.keys(byProj).forEach(pid=>{
+    const proj=PROJECTS.find(p=>p.id===pid);
+    const activeTasks=byProj[pid].filter(t=>t.status!=='done');
+    const doneTasks=byProj[pid].filter(t=>t.status==='done');
+    html+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;
+    html+=activeTasks.map(t=>renderTaskRow(t)).join('');
+    if(doneTasks.length && currentFilter!=='done'){
+      html+=renderDoneCollapse(pid+'_all', doneTasks);
+    } else if(currentFilter==='done'){
+      html+=doneTasks.map(t=>renderTaskRow(t)).join('');
+    }
+  });
   return `
   <div class="tab-row">${['all','todo','inprogress','review','done'].map(f=>`<div class="tab ${currentFilter===f?'active':''}" onclick="setFilter('${f}')">${{all:'All',todo:'To Do',inprogress:'In Progress',review:'Review',done:'Done'}[f]}</div>`).join('')}</div>
   <div class="panel">
@@ -956,7 +1000,18 @@ function renderMemberView(mid){
   const byProj={};
   tasks.forEach(t=>{if(!byProj[t.project])byProj[t.project]=[];byProj[t.project].push(t);});
   let html='';
-  Object.keys(byProj).forEach(pid=>{const proj=PROJECTS.find(p=>p.id===pid);html+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;html+=byProj[pid].map(t=>renderTaskRow(t)).join('');});
+  Object.keys(byProj).forEach(pid=>{
+    const proj=PROJECTS.find(p=>p.id===pid);
+    const activeTasks=byProj[pid].filter(t=>t.status!=='done');
+    const doneTasks=byProj[pid].filter(t=>t.status==='done');
+    html+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;
+    html+=activeTasks.map(t=>renderTaskRow(t)).join('');
+    if(doneTasks.length && currentFilter!=='done'){
+      html+=renderDoneCollapse(pid+'_all', doneTasks);
+    } else if(currentFilter==='done'){
+      html+=doneTasks.map(t=>renderTaskRow(t)).join('');
+    }
+  });
   const mav=m.photo?`<div style="width:32px;height:32px;border-radius:50%;overflow:hidden"><img src="${m.photo}" style="width:100%;height:100%;object-fit:cover" /></div>`:`<div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div>`;return `
   <div class="stats-grid">
     <div class="stat-card" style="border-top:3px solid ${m.color}"><div class="stat-label">Total</div><div class="stat-num" style="color:${m.color}">${tasks.length}</div></div>
@@ -997,6 +1052,129 @@ function renderReportView(){
 }
 
 
+
+// ============ DONE COLLAPSE ============
+let expandedDone = {}; // track which groups are expanded
+
+function renderDoneCollapse(key, doneTasks){
+  const isOpen = expandedDone[key];
+  const tasksHTML = isOpen ? doneTasks.map(t=>renderTaskRow(t)).join('') : '';
+  return `
+  <div class="done-toggle-row" onclick="toggleDoneCollapse('${key}')">
+    <span class="done-toggle-label">✅ ${doneTasks.length} done task${doneTasks.length>1?'s':''}</span>
+    <span class="done-toggle-arrow ${isOpen?'open':''}">▶</span>
+  </div>
+  <div class="done-tasks-wrap" id="done_wrap_${key}" style="max-height:${isOpen?'9999px':'0'}">
+    ${tasksHTML}
+  </div>`;
+}
+
+window.toggleDoneCollapse = function(key){
+  expandedDone[key] = !expandedDone[key];
+  // lightweight DOM update — just re-render the wrap
+  const wrap = document.getElementById('done_wrap_'+key);
+  const arrow = wrap?.previousElementSibling?.querySelector('.done-toggle-arrow');
+  if(!wrap) { render(); return; }
+  if(expandedDone[key]){
+    // expand: inject tasks
+    const allTasks = getTasksArray().filter(t=>t.status==='done');
+    // figure out which tasks belong to this group by key prefix
+    const pid = key.replace(/_today$|_all$/,'');
+    const doneTasks = allTasks.filter(t=>t.project===pid);
+    wrap.style.maxHeight='9999px';
+    wrap.innerHTML = doneTasks.map(t=>renderTaskRow(t)).join('');
+    if(arrow) arrow.classList.add('open');
+  } else {
+    wrap.style.maxHeight='0';
+    wrap.innerHTML='';
+    if(arrow) arrow.classList.remove('open');
+  }
+};
+
+// ============ ARCHIVE VIEW ============
+let archiveFilterMember  = '';
+let archiveFilterProject = '';
+
+function renderArchiveView(){
+  const allDone = getTasksArray()
+    .filter(t=>t.status==='done')
+    .sort((a,b)=>b.date>a.date?1:-1);
+
+  // apply filters
+  let filtered = allDone;
+  if(archiveFilterMember)  filtered=filtered.filter(t=>t.assign===archiveFilterMember);
+  if(archiveFilterProject) filtered=filtered.filter(t=>t.project===archiveFilterProject);
+
+  // group by month
+  const byMonth={};
+  filtered.forEach(t=>{
+    const d=new Date(t.date+'T00:00:00');
+    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    const label=d.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+    if(!byMonth[key]) byMonth[key]={label,tasks:[]};
+    byMonth[key].tasks.push(t);
+  });
+
+  // stat cards
+  const totalDone = allDone.length;
+  const thisMonth = allDone.filter(t=>{const d=new Date(t.date+'T00:00:00');const n=new Date();return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();}).length;
+  const thisWeek  = allDone.filter(t=>{const d=new Date(t.date+'T00:00:00');const now=new Date();const sw=new Date(now);sw.setDate(now.getDate()-((now.getDay()+6)%7));sw.setHours(0,0,0,0);return d>=sw&&d<=now;}).length;
+
+  // filter bar
+  const memberChips = `
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Member:</span>
+      <div class="kfilter-chip ${!archiveFilterMember?'active':''}" onclick="setArchiveFilter('member','')">All</div>
+      ${MEMBERS.map(m=>{
+        const av=m.photo?`<img src="${m.photo}" style="width:16px;height:16px;border-radius:50%;object-fit:cover"/>`:`<div style="width:16px;height:16px;border-radius:50%;background:${m.color};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff">${m.short}</div>`;
+        return `<div class="kfilter-chip ${archiveFilterMember===m.id?'active':''}" onclick="setArchiveFilter('member','${m.id}')" style="${archiveFilterMember===m.id?`background:${m.color};border-color:${m.color};color:#fff`:''}"><div style="display:flex;align-items:center;gap:4px">${av}<span>${m.name}</span></div></div>`;
+      }).join('')}
+    </div>`;
+
+  const projChips = `
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Project:</span>
+      <div class="kfilter-chip ${!archiveFilterProject?'active':''}" onclick="setArchiveFilter('project','')">All</div>
+      ${PROJECTS.map(p=>`<div class="kfilter-chip ${archiveFilterProject===p.id?'active':''}" onclick="setArchiveFilter('project','${p.id}')" style="${archiveFilterProject===p.id?`background:${p.color};border-color:${p.color};color:#fff`:''}"><div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;background:${p.color}"></div><span>${p.name}</span></div></div>`).join('')}
+    </div>`;
+
+  const monthsHTML = Object.keys(byMonth).map(key=>{
+    const {label,tasks:mt}=byMonth[key];
+    return `
+    <div class="archive-period">
+      <div class="archive-period-hd">
+        <div class="archive-period-label">📅 ${label}</div>
+        <div class="archive-period-count">${mt.length} task${mt.length>1?'s':''} completed</div>
+      </div>
+      <div class="panel">${mt.map(t=>renderTaskRow(t)).join('')}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px">
+    <div class="archive-stat"><div class="archive-stat-num" style="color:var(--green)">${totalDone}</div><div class="archive-stat-label">Total Done</div></div>
+    <div class="archive-stat"><div class="archive-stat-num" style="color:var(--accent)">${thisMonth}</div><div class="archive-stat-label">This Month</div></div>
+    <div class="archive-stat"><div class="archive-stat-num" style="color:var(--orange)">${thisWeek}</div><div class="archive-stat-label">This Week</div></div>
+  </div>
+  <div class="archive-filter-bar">
+    ${memberChips}
+    <div style="width:100%;height:1px;background:var(--border)"></div>
+    ${projChips}
+    ${(archiveFilterMember||archiveFilterProject)?`<button onclick="setArchiveFilter('reset','')" style="background:var(--red-s);color:var(--red);border:none;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-weight:500">✕ Clear</button>`:''}
+  </div>
+  ${filtered.length
+    ? monthsHTML
+    : '<div class="empty"><div class="ei">📭</div>No done tasks found</div>'}`;
+}
+
+window.setArchiveFilter = function(type, val){
+  if(type==='member')  archiveFilterMember=val;
+  else if(type==='project') archiveFilterProject=val;
+  else { archiveFilterMember=''; archiveFilterProject=''; }
+  render();
+};
+
+
 // ============ KANBAN VIEW ============
 // Kanban filter state
 let kanbanFilterMember = '';
@@ -1020,18 +1198,23 @@ function renderKanbanView(){
   tasks.forEach(t=>{ if(byStatus[t.status]) byStatus[t.status].push(t); });
 
   const colsHTML = cols.map(col => {
-    const colTasks = byStatus[col.id] || [];
-    const cardsHTML = colTasks.length
-      ? colTasks.map(t => renderKanbanCard(t)).join('')
-      : `<div class="kanban-empty">No tasks</div>`;
+    const allColTasks = byStatus[col.id] || [];
+    const colTasks = col.id!=='done' ? allColTasks : (expandedDone['kanban_done'] ? allColTasks : []);
+    const cardsHTML = col.id==='done'
+      ? (expandedDone['kanban_done']
+          ? allColTasks.map(t=>renderKanbanCard(t)).join('')
+          : '')
+      : (allColTasks.length ? allColTasks.map(t=>renderKanbanCard(t)).join('') : `<div class="kanban-empty">No tasks</div>`);
     return `
     <div class="kanban-col" id="kcol_${col.id}"
       ondragover="event.preventDefault();document.getElementById('kbody_${col.id}').classList.add('drag-over')"
       ondragleave="document.getElementById('kbody_${col.id}').classList.remove('drag-over')"
       ondrop="dropTask(event,'${col.id}')">
-      <div class="kanban-col-hd" style="border-top:3px solid ${col.color}">
+      <div class="kanban-col-hd" style="border-top:3px solid ${col.color};cursor:${col.id==='done'?'pointer':'default'}"
+        onclick="${col.id==='done'?`toggleDoneCollapse('kanban_done')`:''}">
         <span style="color:${col.color}">${col.label}</span>
-        <span class="kcol-badge" style="background:${col.bg};color:${col.color}">${colTasks.length}</span>
+        <span class="kcol-badge" style="background:${col.bg};color:${col.color}">${allColTasks.length}</span>
+        ${col.id==='done'?`<span style="font-size:10px;color:var(--muted);margin-left:4px">${expandedDone['kanban_done']?'▲ hide':'▼ show'}</span>`:''}
       </div>
       <div class="kanban-col-body" id="kbody_${col.id}">${cardsHTML}</div>
     </div>`;
