@@ -286,6 +286,10 @@ h1,h2,h3{font-family:'Roboto',sans-serif;font-weight:700;}
 .kanban-empty{padding:20px 12px;text-align:center;font-size:11px;color:var(--muted2);}
 .kfilter-chip{padding:4px 10px;border-radius:99px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);color:var(--muted);background:var(--bg);transition:all .12s;user-select:none;white-space:nowrap;}
 .kfilter-chip:hover{border-color:var(--border2);color:var(--text);}
+.archive-btn{opacity:0;}
+.task-row:hover .archive-btn{opacity:1;}
+.archive-btn:hover{color:var(--orange)!important;}
+.archived-row{opacity:.6;}
 .kfilter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 
 /* ===== CALENDAR ===== */
@@ -636,6 +640,8 @@ function todate(d){ return d.toISOString().slice(0,10); }
 function isAdmin(){ return MEMBERS.find(m=>m.id===currentUser)?.perm==='admin'; }
 function canEdit(){ return isAdmin(); }
 function getTasksArray(){ return Object.entries(TASKS||{}).map(([id,t])=>({...t,id})); }
+function getActiveTasks(){ return getTasksArray().filter(t=>!t.archived); }
+function getArchivedTasks(){ return getTasksArray().filter(t=>t.archived===true); }
 
 // ============ SYNC INDICATOR ============
 let syncTimer;
@@ -809,7 +815,7 @@ function renderSideNav(){
     <div class="sb-item ${currentView==='proj:'+p.id?'active':''}" onclick="setView('proj:${p.id}',this)">
       <div class="proj-dot" style="background:${p.color}"></div>
       <span style="flex:1;font-size:12px">${p.name}</span>
-      <span style="font-size:10px;color:var(--muted)">${getTasksArray().filter(t=>t.project===p.id&&t.status!=='done').length}</span>
+      <span style="font-size:10px;color:var(--muted)">${getActiveTasks().filter(t=>t.project===p.id&&t.status!=='done').length}</span>
     </div>`).join('');
   const mn=document.getElementById('memberNav');
   if(mn) mn.innerHTML=MEMBERS.map(m=>`
@@ -818,15 +824,15 @@ function renderSideNav(){
         ${m.photo?`<img src="${m.photo}" style="width:100%;height:100%;object-fit:cover" />`:`${m.short}`}
       </div>
       <span style="flex:1;font-size:12px">${m.name}</span>
-      <span style="font-size:10px;color:var(--muted)">${getTasksArray().filter(t=>t.assign===m.id&&t.status!=='done').length}</span>
+      <span style="font-size:10px;color:var(--muted)">${getActiveTasks().filter(t=>t.assign===m.id&&t.status!=='done').length}</span>
     </div>`).join('');
 }
 
 function updateBadge(){
-  const rem=getTasksArray().filter(t=>t.date===todayStr()&&t.status!=='done').length;
+  const rem=getActiveTasks().filter(t=>t.date===todayStr()&&t.status!=='done').length;
   const el=document.getElementById('todayBadge');
   if(el) el.textContent=rem;
-  const doneCount=getTasksArray().filter(t=>t.status==='done').length;
+  const doneCount=getTasksArray().filter(t=>t.archived===true).length;
   const ab=document.getElementById('archiveBadge');
   if(ab) ab.textContent=doneCount;
 }
@@ -843,7 +849,7 @@ window.setView = function(v, el){
 
 // ============ TODAY VIEW ============
 function renderTodayView(){
-  const tasks=getTasksArray().filter(t=>t.date===todayStr());
+  const tasks=getActiveTasks().filter(t=>t.date===todayStr());
   const done=tasks.filter(t=>t.status==='done').length;
   const pct=tasks.length?Math.round(done/tasks.length*100):0;
   const byProj={};
@@ -851,15 +857,8 @@ function renderTodayView(){
   let tasksHTML='';
   Object.keys(byProj).forEach(pid=>{
     const proj=PROJECTS.find(p=>p.id===pid);
-    const activeTasks = byProj[pid].filter(t=>t.status!=='done');
-    const doneTasks   = byProj[pid].filter(t=>t.status==='done');
     tasksHTML+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;
-    tasksHTML+=filterTasks(activeTasks).map(t=>renderTaskRow(t)).join('');
-    if(doneTasks.length && currentFilter!=='done'){
-      tasksHTML+=renderDoneCollapse(pid+'_today', doneTasks);
-    } else if(currentFilter==='done'){
-      tasksHTML+=doneTasks.map(t=>renderTaskRow(t)).join('');
-    }
+    tasksHTML+=filterTasks(byProj[pid]).map(t=>renderTaskRow(t)).join('');
   });
   if(!tasksHTML) tasksHTML='<div class="empty"><div class="ei">✨</div>No tasks today</div>';
   return `
@@ -896,22 +895,15 @@ function renderTodayView(){
 
 // ============ ALL VIEW ============
 function renderAllView(){
-  const tasks=getTasksArray().sort((a,b)=>b.date>a.date?1:-1);
+  const tasks=getActiveTasks().sort((a,b)=>b.date>a.date?1:-1);
   const filtered=filterTasks(tasks);
   const byProj={};
   filtered.forEach(t=>{if(!byProj[t.project])byProj[t.project]=[];byProj[t.project].push(t);});
   let html='';
   Object.keys(byProj).forEach(pid=>{
     const proj=PROJECTS.find(p=>p.id===pid);
-    const activeTasks=byProj[pid].filter(t=>t.status!=='done');
-    const doneTasks=byProj[pid].filter(t=>t.status==='done');
     html+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;
-    html+=activeTasks.map(t=>renderTaskRow(t)).join('');
-    if(doneTasks.length && currentFilter!=='done'){
-      html+=renderDoneCollapse(pid+'_all', doneTasks);
-    } else if(currentFilter==='done'){
-      html+=doneTasks.map(t=>renderTaskRow(t)).join('');
-    }
+    html+=byProj[pid].map(t=>renderTaskRow(t)).join('');
   });
   return `
   <div class="tab-row">${['all','todo','inprogress','review','done'].map(f=>`<div class="tab ${currentFilter===f?'active':''}" onclick="setFilter('${f}')">${{all:'All',todo:'To Do',inprogress:'In Progress',review:'Review',done:'Done'}[f]}</div>`).join('')}</div>
@@ -960,7 +952,7 @@ function renderProjectsView(){
 function renderProjDetail(pid){
   const proj=PROJECTS.find(p=>p.id===pid);
   if(!proj) return '';
-  const tasks=getTasksArray().filter(t=>t.project===pid);
+  const tasks=getActiveTasks().filter(t=>t.project===pid);
   const done=tasks.filter(t=>t.status==='done').length;
   const pct=tasks.length?Math.round(done/tasks.length*100):0;
   const byStatus={todo:[],inprogress:[],review:[],done:[]};
@@ -994,7 +986,7 @@ function renderProjDetail(pid){
 function renderMemberView(mid){
   const m=MEMBERS.find(x=>x.id===mid);
   if(!m) return '';
-  const tasks=getTasksArray().filter(t=>t.assign===mid);
+  const tasks=getActiveTasks().filter(t=>t.assign===mid);
   const done=tasks.filter(t=>t.status==='done').length;
   const today=tasks.filter(t=>t.date===todayStr()&&t.status!=='done').length;
   const byProj={};
@@ -1002,15 +994,8 @@ function renderMemberView(mid){
   let html='';
   Object.keys(byProj).forEach(pid=>{
     const proj=PROJECTS.find(p=>p.id===pid);
-    const activeTasks=byProj[pid].filter(t=>t.status!=='done');
-    const doneTasks=byProj[pid].filter(t=>t.status==='done');
     html+=`<div class="task-group-hd" style="color:${proj?.color||'var(--muted)'}">${proj?.name||pid}</div>`;
-    html+=activeTasks.map(t=>renderTaskRow(t)).join('');
-    if(doneTasks.length && currentFilter!=='done'){
-      html+=renderDoneCollapse(pid+'_all', doneTasks);
-    } else if(currentFilter==='done'){
-      html+=doneTasks.map(t=>renderTaskRow(t)).join('');
-    }
+    html+=byProj[pid].map(t=>renderTaskRow(t)).join('');
   });
   const mav=m.photo?`<div style="width:32px;height:32px;border-radius:50%;overflow:hidden"><img src="${m.photo}" style="width:100%;height:100%;object-fit:cover" /></div>`:`<div class="avatar" style="background:${m.color}22;color:${m.color}">${m.short}</div>`;return `
   <div class="stats-grid">
@@ -1097,7 +1082,7 @@ let archiveFilterProject = '';
 
 function renderArchiveView(){
   const allDone = getTasksArray()
-    .filter(t=>t.status==='done')
+    .filter(t=>t.archived===true)
     .sort((a,b)=>b.date>a.date?1:-1);
 
   // apply filters
@@ -1144,9 +1129,9 @@ function renderArchiveView(){
     <div class="archive-period">
       <div class="archive-period-hd">
         <div class="archive-period-label">📅 ${label}</div>
-        <div class="archive-period-count">${mt.length} task${mt.length>1?'s':''} completed</div>
+        <div class="archive-period-count">${mt.length} task${mt.length>1?'s':''} archived</div>
       </div>
-      <div class="panel">${mt.map(t=>renderTaskRow(t)).join('')}</div>
+      <div class="panel">${mt.map(t=>renderTaskRow(t,true)).join('')}</div>
     </div>`;
   }).join('');
 
@@ -1189,7 +1174,7 @@ function renderKanbanView(){
   ];
 
   // Apply filters
-  let tasks = getTasksArray();
+  let tasks = getActiveTasks();
   if(kanbanFilterMember)  tasks = tasks.filter(t=>t.assign===kanbanFilterMember);
   if(kanbanFilterProject) tasks = tasks.filter(t=>t.project===kanbanFilterProject);
   const totalAll = getTasksArray().length;
@@ -1199,22 +1184,17 @@ function renderKanbanView(){
 
   const colsHTML = cols.map(col => {
     const allColTasks = byStatus[col.id] || [];
-    const colTasks = col.id!=='done' ? allColTasks : (expandedDone['kanban_done'] ? allColTasks : []);
-    const cardsHTML = col.id==='done'
-      ? (expandedDone['kanban_done']
-          ? allColTasks.map(t=>renderKanbanCard(t)).join('')
-          : '')
-      : (allColTasks.length ? allColTasks.map(t=>renderKanbanCard(t)).join('') : `<div class="kanban-empty">No tasks</div>`);
+    const cardsHTML = allColTasks.length
+      ? allColTasks.map(t => renderKanbanCard(t)).join('')
+      : `<div class="kanban-empty">No tasks</div>`;
     return `
     <div class="kanban-col" id="kcol_${col.id}"
       ondragover="event.preventDefault();document.getElementById('kbody_${col.id}').classList.add('drag-over')"
       ondragleave="document.getElementById('kbody_${col.id}').classList.remove('drag-over')"
       ondrop="dropTask(event,'${col.id}')">
-      <div class="kanban-col-hd" style="border-top:3px solid ${col.color};cursor:${col.id==='done'?'pointer':'default'}"
-        onclick="${col.id==='done'?`toggleDoneCollapse('kanban_done')`:''}">
+      <div class="kanban-col-hd" style="border-top:3px solid ${col.color}">
         <span style="color:${col.color}">${col.label}</span>
         <span class="kcol-badge" style="background:${col.bg};color:${col.color}">${allColTasks.length}</span>
-        ${col.id==='done'?`<span style="font-size:10px;color:var(--muted);margin-left:4px">${expandedDone['kanban_done']?'▲ hide':'▼ show'}</span>`:''}
       </div>
       <div class="kanban-col-body" id="kbody_${col.id}">${cardsHTML}</div>
     </div>`;
@@ -1499,7 +1479,7 @@ function fmtDate(d){
   return dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
 }
 
-function renderTaskRow(t){
+function renderTaskRow(t, inArchive=false){
   const proj=PROJECTS.find(p=>p.id===t.project);
   const m=MEMBERS.find(x=>x.id===t.assign);
   const isDone=t.status==='done';
@@ -1507,13 +1487,18 @@ function renderTaskRow(t){
   const stL={todo:'To Do',inprogress:'In Progress',review:'Review',done:'Done'};
   const clickFn=canEdit()?`openDetail('${t.id}')`:`openDetailReadonly('${t.id}')`;
 
-  // avatar: photo or initials
   const avatarHTML = m ? (m.photo
     ? `<div class="task-assignee" title="${m.name}" style="padding:0;overflow:hidden"><img src="${m.photo}" style="width:20px;height:20px;border-radius:50%;object-fit:cover" /></div>`
     : `<div class="task-assignee" style="background:${m.color}22;color:${m.color}" title="${m.name}">${m.short}</div>`
   ) : '';
 
-  return `<div class="task-row ${isDone?'done':''}" id="tr_${t.id}" onclick="${clickFn}">
+  // Archive actions
+  const archiveBtn = canEdit() ? (inArchive
+    ? `<button class="icon-btn" title="Restore" onclick="event.stopPropagation();restoreTask('${t.id}')" style="color:var(--green)">↩</button>`
+    : `<button class="icon-btn archive-btn" title="Archive this task" onclick="event.stopPropagation();archiveTask('${t.id}')">🗂</button>`
+  ) : '';
+
+  return `<div class="task-row ${isDone?'done':''} ${t.archived?'archived-row':''}" id="tr_${t.id}" onclick="${clickFn}">
     <div class="check-box ${isDone?'done':''}" onclick="event.stopPropagation();toggleDone('${t.id}')"></div>
     <div class="task-prio p-${t.prio}"></div>
     <div class="task-body">
@@ -1527,7 +1512,11 @@ function renderTaskRow(t){
     </div>
     ${avatarHTML}
     ${t.date?`<span class="task-date">${fmtDate(t.date)}</span>`:''}
-    ${canEdit()?`<div class="task-actions"><button class="icon-btn task-del" onclick="event.stopPropagation();deleteTask('${t.id}')">✕</button></div>`:''}
+    <div class="task-actions" style="gap:2px">
+      ${archiveBtn}
+      ${canEdit()&&!inArchive?`<button class="icon-btn task-del" onclick="event.stopPropagation();deleteTask('${t.id}')">✕</button>`:''}
+      ${canEdit()&&inArchive?`<button class="icon-btn task-del" onclick="event.stopPropagation();deleteTask('${t.id}')">🗑</button>`:''}
+    </div>
   </div>`;
 }
 
@@ -1768,6 +1757,23 @@ window.addMember = async function(){
   await fbSet(`members/${id}`,{id,name,role:document.getElementById('newMRole').value||'Member',color:document.getElementById('newMColor').value,short:name.slice(0,1).toUpperCase(),perm:document.getElementById('newMPerm').value});
   document.getElementById('newMName').value='';
   document.getElementById('newMRole').value='';
+};
+
+
+// ============ ARCHIVE ACTIONS ============
+window.archiveTask = async function(id){
+  const t = TASKS[id]; if(!t) return;
+  if(!confirm(`Archive "${t.title}"?\nIt will be hidden from main lists and moved to Archive.`)) return;
+  const existing = {...t};
+  existing.archived = true;
+  await fbSet(`tasks/${id}`, existing);
+};
+
+window.restoreTask = async function(id){
+  const t = TASKS[id]; if(!t) return;
+  const existing = {...t};
+  delete existing.archived;
+  await fbSet(`tasks/${id}`, existing);
 };
 
 // ============ IMAGE ATTACHMENTS ============
